@@ -1,8 +1,8 @@
 <template>
     <div class="welcome">
-        <h3>欢迎您</h3>
+        <h3 v-html="welcome"></h3>
         <p>参与{{this.userData.projectName}}项目，完成即可获得{{this.userData.projectIntegral}}积分</p>
-        <div class="join" @click="goToProjectJoinPage">
+        <div class="join" @click="start">
             立即参与
         </div>
     </div>
@@ -10,20 +10,23 @@
 <script>
     export default{
         mounted(){
-            this.userData = JSON.parse(sessionStorage.getItem('userData'))
-            console.log(this.userData);
+            this.usePara()
+            
         },
         data(){
             return {
-                userData:{}
+                userData:{},
+                welcome:'',
             }
         },
         methods:{
-            goToProjectJoinPage(){
-                this.axios.get(this.common.getApi() + '/web/api/project/goToProjectJoinPage',{
+            start(){
+              
+              this.axios.get(this.common.getApi() + '/web/api/project/startAnswer',{
                   params:{
                     params:{
                       id: this.userData.id,
+                      type:0
                     }
                   }
                 },{
@@ -32,12 +35,19 @@
                   }
                 }).then((res) => {
                   if(res.data.success){
-                    location.href="http://www.baidu.com"
+                    console.log(res.data);
+                    //location.href=res.data.obj
+                    //location.href='http://www.baidu.com'
                   }else{
                     this.$message.error(res.data.msg);
                   }
                 })
-              }
+            },
+            usePara(){
+              this.welcome = JSON.parse(this.$route.query.params).welcomecontent
+              this.userData = JSON.parse(this.$route.query.data)
+              
+            }
         },
     }
 </script>

@@ -112,9 +112,34 @@
     },
     methods: {
       gotowelcome(data){
-        console.log(data);
-        sessionStorage.setItem('userData',JSON.stringify(data))
-        this.$router.push('/welcomeAnser')
+              
+
+                this.axios.get(this.common.getApi() + '/web/api/project/goToProjectJoinPage',{
+                  params:{
+                    params:{
+                      id: Number(data.id),
+                    }
+                  }
+                },{
+                  headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                  }
+                }).then((res) => {
+                  if(res.data.success){
+                    console.log(res.data.obj);
+                    
+                    this.$router.push({
+                      path:'/welcomeAnser',
+                      query:{
+                        params:JSON.stringify(res.data.obj),
+                        data:JSON.stringify(data)
+                      }
+                    })
+                  }else{
+                    this.$message.error(res.data.msg);
+                  }
+                })
+                
       },
       getMemberProjectList(pageIndex,pageSize){
         this.axios.get(this.common.getApi() + '/web/api/project/getMemberProjectList',{
