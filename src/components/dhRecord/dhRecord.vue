@@ -61,7 +61,16 @@
         }).then((res) => {
           if(res.data.success){
             this.tableData = res.data.obj.list;
-            this.pageTotal = res.data.obj.pager.total;            
+            this.pageTotal = res.data.obj.pager.total; 
+            for(var i = 0; i < this.tableData.length; i++){
+            if(this.tableData[i].deliverstatus == 0){
+              this.tableData[i].deliverstatus = '待支付';
+            }else if(this.tableData[i].deliverstatus == 1){
+              this.tableData[i].deliverstatus = '已支付';
+            }else if(this.tableData[i].deliverstatus == 3){
+              this.tableData[i].deliverstatus = '无效订单';
+            }
+          }           
           }
 //        console.log(this.pageTotal);
         })        

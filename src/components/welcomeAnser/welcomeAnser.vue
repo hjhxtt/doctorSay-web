@@ -3,7 +3,7 @@
         <h3 v-html="welcome"></h3>
         <p>参与{{this.userData.projectName}}项目，完成即可获得{{this.userData.projectIntegral}}积分</p>
         <div class="join" @click="start">
-            立即参与
+            马上答题
         </div>
     </div>
 </template>

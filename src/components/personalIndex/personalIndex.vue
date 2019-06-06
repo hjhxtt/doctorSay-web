@@ -197,7 +197,15 @@
           }
         }).then((res) => {
           if(res.data.success){
-            location.href="http://www.baidu.com"
+
+            this.$router.push({
+                      path:'/welcomeAnser',
+                      query:{
+                        params:JSON.stringify(res.data.obj),
+                        data:JSON.stringify(row)
+                      }
+                    })
+
           }else{
             this.$message.error(res.data.msg);
           }

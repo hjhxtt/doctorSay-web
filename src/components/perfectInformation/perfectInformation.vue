@@ -331,7 +331,13 @@
                   type: 'success'
                 });
                 this.uploadForm = new FormData()
-                this.$router.push('/index');
+
+                this.$alert('您已经成功完成医生说注册，并获得30元积分奖励，通过医师认证后您将可以使用这些积分，如果你上传了执业证，工作人员将在3-4天完成审核认证。如果你只填写了科室电话，工作人员将在7-10内拨打您科室电话进行医师认证审核，请您耐心等待。接下来页面将跳转至医生说会员中心。', '提示', {
+                  confirmButtonText: '确定',
+                  type: 'success'
+                }).then(() => {
+                  this.$router.push('/index');
+                })
               }else{
                 this.$message.error(res.data.msg);
                 this.fileList = [];

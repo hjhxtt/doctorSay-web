@@ -24,7 +24,7 @@
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" :inline-message="true">
         <el-form-item label="推荐码" prop="referral_code" style="margin-bottom: 55px;">
           <el-input v-model="ruleForm.referral_code" placeholder="字符推荐码或者推荐人的手机号码"></el-input>
-          <div class="form-tips">如无人推荐，请点此 <span @click="getcode">获取推荐码</span> <b v-if="isgetcode">LHOZL1</b></div>
+          <div class="form-tips">如无人推荐，请点此 <span @click="getcode">获取推荐码</span> <b v-if="isgetcode">TBENQ</b></div>
         </el-form-item>
         <el-form-item label="手机号码" prop="mobile" style="margin-bottom: 101px;">
           <el-input v-model="ruleForm.mobile" placeholder="请输入手机号码"></el-input>
@@ -41,6 +41,7 @@
         </el-form-item>
         <el-form-item label="电子邮箱" prop="Email">
           <el-input v-model="ruleForm.Email" placeholder="请输入电子邮箱"></el-input>
+          <el-checkbox v-model="checkedEmail" @change="noEmail">不使用邮箱</el-checkbox>
         </el-form-item>
         <el-form-item label="真实姓名" prop="real_name">
           <el-input v-model="ruleForm.real_name" placeholder="请输入您的真实姓名"></el-input>
@@ -103,6 +104,116 @@
         <el-form-item  prop="checked">
           <el-checkbox v-model="ruleForm.checked" class="check-txt">我阅读并接受医生说网站的<i>《注册条款》</i>和<i>《隐私保护政策》</i></el-checkbox>
         </el-form-item>
+        <div id="protocol-con">
+            <h4>“医生说”会员规则</h4>
+            <h5>第一条 总则</h5>
+            <p>
+                <strong>1.1</strong>医生说（http://www.yishengshuo.com）是国际著名市场调查研究机构InterfaceASIA-Holden在中国的医学市场调查专业社区。会员的积极参与，将会直接影响医药的研发，决策和投入生产，使其能更好的满足医生的需求，为广大病患的康复带来福音。
+            </p>
+            <p>
+                <strong>1.2</strong>本规则中所指“服务”是“医生说”邀请注册会员完成网络问卷的调研，以及相应的奖励通知等(详情请参阅“奖励规则”)。
+            </p>
+            <p>
+                <strong>1.3</strong>“医生说”保留对本规定在法律范畴内进行修订和完善的权利，并在“医生说”上及时公布。如果会员没有任何异议就表示同意并且遵守本规则，否则将自动取消其会员资格；如果不同意所改动的内容，会员可以主动取消其会员资格。
+            </p>
+            <p>
+                <strong>1.4</strong>会员必须同意接受“医生说”通过手机短信和电子邮件向其发送的服务信息。“医生说”只会向会员发送邀请参加网调信息和获奖通知，不推销任何产品或服务。
+            </p>
+            <h5>第二条 会员资格</h5>
+            <p>
+                <strong>2.1</strong>会员必须为医务工作者。
+            </p>
+            <p>
+                <strong>2.2</strong>同意本规则并按照“医生说”所规定的方式完成注册，经确认后成为“医生说”的会员。
+            </p>
+            <p>
+                <strong>2.3</strong>会员必须按本公司所规定的方式参加调查，回答问题真实有效。
+            </p>
+            <p>
+                <strong>2.4</strong>同一会员不能重复注册。
+            </p>
+            <p>
+                <strong>2.5</strong>经过调查发现会员注册的信息为虚假信息或者从事其他违反本规则的事情时，“医生说”有权取消其会员资格。
+            </p>
+            <h5>第三条 会员ID以及会员密码管理</h5>
+            <p>
+                <strong>3.1</strong>会员ID以及会员密码由会员本人管理；会员如果忘记密码，可根据本网站提供的方式找回密码。
+            </p>
+            <p>
+                <strong>3.2</strong>会员不得将ID以及密码转让、借给他人使用，也不可以进行名义变更、买卖活动。
+            </p>
+            <p>
+                <strong>3.3</strong>公司对会员ID以及会员密码在使用上的过失或者由于第三者的利用而造成的损失概不负责。
+            </p>
+            <h5>第四条 注册信息</h5>
+            <p>
+                <strong>4.1</strong>在申请会员注册时，请您如实填写个人信息，以便对申请会员者进行如下的工作：
+            </p>
+            <p style="text-indent: 4em;">
+                (1)会员资格的判断
+            </p>
+            <p style="text-indent: 4em;">
+                (2)确保网络调研数据的真实性
+            </p>
+            <p style="text-indent: 4em;">
+                (3)便于发送调研邀请、奖励以及其他与会员必要的联络
+            </p>
+            <p>
+                <strong>4.2</strong>会员不得填写虚假的注册信息。
+            </p>
+            <p>
+                <strong>4.3</strong>会员地址、电话号码以及其他注册信息变更时应该立即本网站所规定的方式及时进行变更，以确保会员信息的真实性。
+            </p>
+            <p>
+                <strong>4.4</strong>本网站根据需要可能会采用电子邮件、手机短信、电话以及其他的方法对会员注册信息的真伪进行确认。在没有得到会员本人的同意下，本网站承诺保证会员的姓名、住址、电话号码、电子邮箱等相关个人信息的隐私权。
+            </p>
+            <p>
+                <strong>4.5</strong>本网站进行电子邮件的收发时，将使用会员作为注册信息时所填写的同一电子邮箱。
+            </p>
+            <p>
+                <strong>4.6</strong>被终止和自动取消会员资格者不再获得本网站的服务，但仍享有原有的奖励积点或相应的利益。
+            </p>
+            <h5>第五条 参与调查的奖励</h5>
+            <p>
+                <strong>5.1</strong>(详情请参阅“奖励规则”)
+            </p>
+            <h5>第六条 会员资格的取消</h5>
+            <p>
+                <strong>6.1</strong>若发生以下情况之一，本网站有权取消该会员的资格。
+            </p>
+            <p style="text-indent: 4em;">
+                (1)会员未按规定使用会员ID和会员密码者
+            </p>
+            <p style="text-indent: 4em;">
+                (2)会员中的职业受访者
+            </p>
+            <p style="text-indent: 4em;">
+                (3)会员在长时间内(暂定半年内)对本网站的调研邀请没有回应者
+            </p>
+            <p style="text-indent: 4em;">
+                (4)会员在参与调查过程中有作假或指示他人作假者
+            </p>
+            <p style="text-indent: 4em;">
+                (5)会员其他违反本规定者
+            </p>
+            <h5>第七条 知识产权的所有以及其他的权利</h5>
+            <p>
+                <strong>7.1</strong>会员所参与的网络调研的统计结果的著作权归本网站所有。
+            </p>
+            <p>
+                <strong>7.2</strong>“医生说”的logo设计为本网站享有的商标。
+            </p>
+            <p>
+                <strong>7.3</strong>医生说网站进行的所有调研，内容不得公布在其他网站。
+            </p>
+            <p>
+                <strong>7.3</strong>医生说网站的所有医药新闻和资料，未经允许及注明，不得转载。
+            </p>
+            <p>
+                <br>
+                制订：2007年5月21号
+            </p>
+        </div>
         <el-form-item>
           <el-button class="btn-register" @click="submitForm('ruleForm')">注册</el-button>
         </el-form-item>
@@ -180,6 +291,7 @@
       };
 
       return {
+        checkedEmail:false,
         ruleForm: {
           referral_code:'',//推荐码
           mobile:'',//手机号
@@ -220,10 +332,10 @@
             { min: 5, max: 8, message: '密码要在5到8位之间', trigger: 'blur' },
             { validator: validatePass2, trigger: 'blur' }
           ],
-          Email:[
-            { required: true, message: '请输入电子邮箱', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的电子邮箱', trigger: 'blur'}
-          ],
+          // Email:[
+          //   { required: true, message: '请输入电子邮箱', trigger: 'blur' },
+          //   { type: 'email', message: '请输入正确的电子邮箱', trigger: 'blur'}
+          // ],
           real_name:[
             { required: true, message: '请输入您的真实姓名', trigger: 'blur' },
             { pattern:  /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/, message: '请输入您的真实姓名' }
@@ -237,9 +349,9 @@
           duties:[
             { required: true, message: '请选择您的职务', trigger: 'change' }
           ],
-          equivalent_position:[
-            { required: true, message: '请选择您的职称', trigger: 'change' }
-          ],
+          // equivalent_position:[
+          //   { required: true, message: '请选择您的职称', trigger: 'change' }
+          // ],
           executive_position:[
             { required: true, message: '请选择您的行政职位', trigger: 'change' }
           ],
@@ -275,6 +387,17 @@
       this.getParentFields();
     },
     methods: {
+      noEmail(){
+        if(this.checkedEmail){
+          this.rules.Email = ''
+        }else{
+          this.rules.Email = [
+            { required: true, message: '请输入电子邮箱', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的电子邮箱', trigger: 'blur'}
+          ]
+        }
+        
+      },
       getcode(){
         this.isgetcode = true;
       },
@@ -334,6 +457,7 @@
       },
       //获取职称二级
       getStationTechnicalTitle(parentId){
+        this.ruleForm.equivalent_position = ''
         this.axios.get(this.common.getApi() + '/web/api/station/getStationTechnicalTitle',{
           params:{
             params:{
@@ -666,6 +790,23 @@
   }
 
   .register-wrapper .check-txt i{
-    color: #3A88FF;
+    
   }
+  #protocol-con{
+	padding:10px;
+	border: 1px solid #CCCCCC;
+    color: #666666;
+    height: 120px;
+    margin: 0 auto;
+    overflow-y: scroll;
+    padding: 8px;
+    width: 680px;
+}
+#protocol-con h4{padding-bottom:10px;font-size:14px;text-align:center;}
+#protocol-con h5{padding:5px 0;text-indent:2em;}
+#protocol-con p{text-indent:2em;}
+#protocol-con em{font-style:italic;}
+#protocol-con span{text-decoration:underline;}
+#protocol-con strong{margin-right:5px;}
+
 </style>

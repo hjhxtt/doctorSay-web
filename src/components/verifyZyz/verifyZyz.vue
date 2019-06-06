@@ -27,38 +27,52 @@
             <el-input v-model="form.certificate_num" placeholder="请填写执业证书编号" class="certificateInput"></el-input>
           </el-form-item>
           <el-form-item label="执业证书第一页" required>
-            <el-upload
-              class="upload-demo"
-              ref="upload1"
-              action="123"
-              :auto-upload=false
-              :before-upload="beforeUpload1"
-              :on-change="newhandleChange1"
-              :on-success="newhandlesuccess1"
-              :on-exceed="handleExceed1"
-              :limit="1"
-              accept="image/jpeg,image/png">
-              <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
-              <a href="" class="btn-example" target="_blank">查看示例图</a>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
-            </el-upload>            
+            <el-col :span="6">
+              <el-upload
+                class="upload-demo"
+                ref="upload1"
+                action="123"
+                :auto-upload=false
+                :before-upload="beforeUpload1"
+                :on-change="newhandleChange1"
+                :on-success="newhandlesuccess1"
+                :on-exceed="handleExceed1"
+                :limit="1"
+                accept="image/jpeg,image/png">
+                <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
+              </el-upload>  
+            </el-col>
+            <el-col :span="6">
+                <a href="" class="btn-example" @click.prevent="pic1=true">查看示例图</a>
+            </el-col> 
+            <div class="pic" v-if="pic1" @click="pic1=false">
+                <img src="../../assets/p1.png" alt="">
+              </div>
+              <div class="pic" v-if="pic2" @click="pic2=false">
+                <img src="../../assets/p2.png" alt="">
+              </div>         
           </el-form-item>
           <el-form-item label="执业证书第二页" required>
-            <el-upload
-              class="upload-demo"
-              ref="upload2"
-              action="123"
-              :auto-upload=false
-              :before-upload="beforeUpload2"
-              :on-change="newhandleChange2"
-              :on-success="newhandlesuccess2"
-              :on-exceed="handleExceed2"
-              :limit="1"
-              accept="image/jpeg,image/png">
-              <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
-              <a href="" class="btn-example" target="_blank">查看示例图</a>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
-            </el-upload>            
+            <el-col :span="6">
+              <el-upload
+                class="upload-demo"
+                ref="upload2"
+                action="123"
+                :auto-upload=false
+                :before-upload="beforeUpload2"
+                :on-change="newhandleChange2"
+                :on-success="newhandlesuccess2"
+                :on-exceed="handleExceed2"
+                :limit="1"
+                accept="image/jpeg,image/png">
+                <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
+              </el-upload>  
+            </el-col>
+            <el-col :span="6">
+                <a href="" class="btn-example"  @click.prevent="pic2=true">查看示例图</a>   
+              </el-col>            
           </el-form-item>
         </div>
         <div v-if="form.authentication_type.indexOf('2') != -1">
@@ -122,6 +136,8 @@
         }
       };      
       return {
+        pic1:false,
+        pic2:false,
         path:"",
         memberIntegral:null,
         memberRealname:null,
@@ -280,6 +296,8 @@
                 });
                 this.uploadForm = new FormData()
 //              this.$router.push('/index');
+                this.getMemberInfo();
+                this.checkMemberState();
               }else{
                 this.$message.error(res.data.msg);
                 this.fileList = [];
@@ -445,4 +463,20 @@
     color: #FF6161;
     font-size: 12px;
   }  
+  .pic{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.4);
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+  }
+  .pic img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform:translate(-50%,-50%);
+  }
 </style>

@@ -52,8 +52,13 @@
           }
         }).then((res) => {
           if(res.data.success){
+            debugger;
+            console.log(data);
+            
             this.tableData = res.data.obj.list;
             this.pageTotal = res.data.obj.pager.total;
+          }else{
+            this.$message.error(res.data.msg)
           }
 //        console.log(this.pageTotal);
         })        

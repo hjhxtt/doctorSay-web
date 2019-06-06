@@ -13,9 +13,9 @@
       <div class="part-2">
         <p>联系我们</p>
         <ul>
-          <li>会员服务中心：member@yishengshuo.com</li>
+          <li>会员服务中心：Stacy.sun@cn.intage.com</li>
           <li>客服QQ：1523732752</li>
-          <li>业务联系：team@ifa-hd.com</li>
+          <li>业务联系：mana.li@cn.intage.com</li>
         </ul>
       </div>
       <div class="part-3">

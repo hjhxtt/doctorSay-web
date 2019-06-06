@@ -15,8 +15,8 @@
     
     <div class="proDescribe">
       <div class="title">奖品描述</div>
-      <div class="describe-txt">
-        {{giftdiscribe}}
+      <div class="describe-txt" v-html="giftdiscribe">
+        
       </div>
     </div>
   </div>
@@ -81,6 +81,7 @@
             }
           }else{
             this.$message.error(res.data.msg);
+            
           }
         })
       }
