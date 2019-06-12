@@ -87,6 +87,7 @@
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }).then((res) => {
+          debugger;
           if(res.data.code == '200'){
             this.memberIntegral = res.data.obj.memberIntegral;
             this.memberRealname = res.data.obj.memberRealname;

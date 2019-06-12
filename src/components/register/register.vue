@@ -50,17 +50,27 @@
           <el-select placeholder="请选择" v-model="ruleForm.province" style="width: 131px;" @change="getCityByProvince(ruleForm.province)">
             <el-option v-for="item in province_options" :label="item.provinceName" :value="item.provinceId" :key="item.provinceId"></el-option>
           </el-select>
-          <el-select placeholder="请选择" v-model="ruleForm.city" style="width: 131px;" @change="getDistrictByCity(ruleForm.city)">
-            <el-option v-for="item in city_options" :key="item.cityId" :label="item.cityName" :value="item.cityId"></el-option>
-          </el-select>
-          <el-select placeholder="请选择" v-model="ruleForm.region" style="width: 130px;" @change="getHospital(ruleForm.province,ruleForm.city)">
-            <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-          </el-select>
-          <el-col style="width: 400px;margin-top: 20px;">
-            <el-select placeholder="请选择" v-model="ruleForm.hospital">
-              <el-option v-for="item in hospital_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          <span v-if="ruleForm.province !== 0">
+            <el-select placeholder="请选择" v-model="ruleForm.city" style="width: 131px;" @change="getDistrictByCity(ruleForm.city)">
+              <el-option v-for="item in city_options" :key="item.cityId" :label="item.cityName" :value="item.cityId"></el-option>
             </el-select>
-          </el-col>
+            <el-select placeholder="请选择" v-model="ruleForm.region" style="width: 130px;" @change="getHospital(ruleForm.province,ruleForm.city)">
+              <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            </el-select>
+            <el-col style="width: 400px;margin-top: 20px;">
+              <el-select placeholder="请选择" v-model="ruleForm.hospital">
+                <el-option v-for="item in hospital_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-col>
+          </span>
+          <span v-else>
+            <el-input v-model="ruleForm.city" style="width: 131px;" placeholder="请输入城市"></el-input>
+            <el-input v-model="ruleForm.region" style="width: 130px;" placeholder="请输入地区"></el-input>
+            
+            <el-col style="width: 400px;margin-top: 20px;">
+              <el-input v-model="ruleForm.hospital"  placeholder="请输入医院名"></el-input>
+            </el-col>
+          </span>
         </el-form-item>
         <el-form-item label="工作科室" prop="hospital_departments_2">
           <el-select v-model="ruleForm.hospital_departments_1" style="width: 198px;" @change="getSonOffice(ruleForm.hospital_departments_1)">

@@ -62,7 +62,9 @@
          v-if="islogin == true">
         <el-submenu index="1">
           <template slot="title">
-            <img :src="baseurl + $store.state.headurl" alt="" width="50px" height="50px" style="border-radius: 50%;"/>
+
+            <span>{{memberRealname}}，欢迎您！</span> <img :src="baseurl + $store.state.headurl" alt="" width="50px" height="50px" style="border-radius: 50%;"/>
+            
           </template>
           <el-menu-item index="1-1" @click="toCenter">个人中心</el-menu-item>
           <el-menu-item index="1-2" @click="loginOut">退出登录</el-menu-item>
@@ -131,6 +133,7 @@
           }).then((res) => {
             if(res.data.code == '200'){
               this.islogin = true;
+              this.memberRealname = res.data.obj.memberRealname
               this.$store.commit('set_headurl', res.data.obj.memberphoto);
             }else if(res.data.code == '204'){
               this.islogin = false;

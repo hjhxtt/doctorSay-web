@@ -18,7 +18,7 @@
           </el-upload>
           <span class="user-id">{{form_1.memberRealname}}</span>
         </div>
-        <div class="change">如需修改资料，请联系后台管理员 021-7894561</div>
+        <div class="change">如需修改资料，请联系后台管理员：QQ-1523732752</div>
         <el-form :model="form_1" :rules="rules" ref="form_1" label-width="120px" :inline-message='true'>
           <el-form-item label="个人账号" prop="memberHandphone">
             <span class="user-account">{{form_1.memberHandphone}}</span>
