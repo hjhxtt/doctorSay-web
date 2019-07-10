@@ -4,20 +4,20 @@
       :data="tableData"
       style="width: 100%">
       <el-table-column
-        prop="integralrecordid"
-        label="记录id">
-      </el-table-column>
-      <el-table-column
-        prop="integralrecordtime"
-        label="记录时间">
-      </el-table-column>
-      <el-table-column
         prop="integral"
         label="积分数">
       </el-table-column>
       <el-table-column
-        label="积分信息"
+        prop="projectName"
+        label="项目">
+      </el-table-column>
+      <el-table-column
+        label="积分描述"
         prop="integralrecordmsg">
+      </el-table-column>
+      <el-table-column
+        prop="integralrecordtime"
+        label="日期">
       </el-table-column>
     </el-table>   
     <el-pagination
@@ -52,9 +52,6 @@
           }
         }).then((res) => {
           if(res.data.success){
-            debugger;
-            console.log(data);
-            
             this.tableData = res.data.obj.list;
             this.pageTotal = res.data.obj.pager.total;
           }else{

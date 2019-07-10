@@ -3,13 +3,13 @@
     <el-table
       :data="tableData"
       style="width: 100%">
-      <el-table-column
+      <!-- <el-table-column
         prop="projectId"
         label="项目编号">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="projectName"
-        label="调研名称">
+        label="调研项目">
       </el-table-column>
       <el-table-column
         prop="projectIntegral"
@@ -17,11 +17,11 @@
       </el-table-column>
       <el-table-column
         prop="integral"
-        label="会员奖励积分">
+        label="获得积分">
       </el-table-column>
       <el-table-column
         prop="projectEndTime"
-        label="项目结束时间">
+        label="日期">
       </el-table-column>
     </el-table>
     <el-pagination
@@ -56,6 +56,7 @@
           }
         }).then((res) => {
           if(res.data.success){
+            
             this.tableData = res.data.obj.list;
             this.pageTotal = res.data.obj.pager.total;
           }

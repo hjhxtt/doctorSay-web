@@ -156,6 +156,8 @@
                     message: '登录成功'
                   })
                   this.dialogVisible = false;
+                   
+                   this.$router.push('/index')
                    location.reload();
                   //this.checkLogin();
                 }else{

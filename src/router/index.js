@@ -40,6 +40,7 @@ import editPass from '@/components/editPass/editPass'
 import noticeList from '@/components/noticeList/noticeList'
 import noticeDetail from '@/components/noticeDetail/noticeDetail'
 import welcomeAnser from '@/components/welcomeAnser/welcomeAnser'
+import exchangeRecord from '@/components/exchangeRecord/exchangeRecord'
 //import loginDialog from '@/components/loginDialog/loginDialog'
 
 Vue.use(Router)
@@ -151,6 +152,12 @@ export default new Router({
           path: '/verifyZyz',
           name: 'verifyZyz',
           component: verifyZyz
+        },
+        //添加兑换记录
+        {
+          path: '/exchangeRecord',
+          name: 'exchangeRecord',
+          component: exchangeRecord
         },
         {
           path: '/verifyPhone',

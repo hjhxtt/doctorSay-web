@@ -27,10 +27,10 @@
             <span class="btn-jh" v-if="$store.state.status=='203'" @click="$router.push('/verifyZyz')">审核未通过，重新审核</span>
           </el-form-item>
           <el-form-item label="真实姓名" prop="memberRealname">
-            <el-input placeholder="请填写您的真实姓名" v-model="form_1.memberRealname" class="unameInput" disabled></el-input>
+            <el-input placeholder="请填写您的真实姓名" v-model="form_1.memberRealname" class="unameInput"></el-input>
           </el-form-item>
           <el-form-item label="电子邮箱" prop="memberMail">
-            <el-input placeholder="请填写您的电子邮箱" v-model="form_1.memberMail" class="emailInput" disabled></el-input>
+            <el-input placeholder="请填写您的电子邮箱" v-model="form_1.memberMail" class="emailInput"></el-input>
           </el-form-item>
           <!--------------------------------------------------------->
           <el-form-item label="所在医院" prop="fkHospitalId" >
@@ -73,11 +73,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="从医领域" prop="medical_field_2" >
-            <el-select v-model="form_1.medical_field_1" placeholder="请选择" multiple style="width:400px;margin-bottom: 10px;" @change="getSonFields2(form_1.medical_field_1)" disabled>
+            <el-select v-model="form_1.medical_field_1" placeholder="请选择" multiple style="width:400px;margin-bottom: 10px;" @change="getSonFields2(form_1.medical_field_1)">
               <el-option v-for="item in field_1_options" :label="item.fieldname" :key="item.id" :value="item.id"></el-option>
             </el-select>
             <br />
-            <el-select v-model="form_1.membertechnical" placeholder="请选择" multiple style="width: 400px;" disabled>
+            <el-select v-model="form_1.membertechnical" placeholder="请选择" multiple style="width: 400px;">
               <el-option v-for="item in field_2_options" :label="item.fieldname" :key="item.id" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -92,11 +92,11 @@
               >
             </el-date-picker>
           </el-form-item>
-        <!--
+        
           <el-form-item style="border-bottom: 1px solid #E5E5E5;padding-bottom: 40px;">
             <el-button class="btn-save" @click="submitForm('form_1')" :loading="isload1">保存</el-button>
           </el-form-item>
-          -->
+         
 
         </el-form>
           <!--------------------------------------------------------->
@@ -117,7 +117,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="加入的学会" prop="societyid">
-            <el-select v-model="form_2.societyid" multiple placeholder="请填写您参加过的学会" class="meetingInput" style="width: 400px;" disabled>
+            <el-select v-model="form_2.societyid" multiple placeholder="请填写您参加过的学会" class="meetingInput" style="width: 400px;">
               <el-option v-for="item in meeting_options" :label="item.societyname" :key="item.id" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
@@ -137,11 +137,11 @@
               <el-option v-for="item in school_options" :label="item.graduatename" :key="item.graduateid" :value="item.graduateid"></el-option>
             </el-select>
           </el-form-item>
-          <!--
+          
           <el-form-item>
             <el-button class="btn-save" @click="submitForm('form_2')" :loading="isload2">保存</el-button>
           </el-form-item>
-          -->
+         
         </el-form>
       </div>
 

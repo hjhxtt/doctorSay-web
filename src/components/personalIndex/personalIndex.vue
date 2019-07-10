@@ -55,34 +55,42 @@
         style="width: 100%">
         <el-table-column
           prop="projectId"
-          label="调查编号">
+          label="项目编号">
         </el-table-column>
         <el-table-column
           prop="projectName"
-          label="调查名称">
+          label="项目名称">
         </el-table-column>
         <el-table-column
           prop="projectState"
-          label="调查状态">
+          label="项目状态">
         </el-table-column>
         <el-table-column
-          prop="joinState"
+          prop="state"
           label="参与状态">
         </el-table-column>
         <el-table-column
           prop="projectIntegral"
-          label="调查酬金">
+          label="项目礼金">
+        </el-table-column>
+         <el-table-column
+          prop="integral"
+          label="获得积分">
         </el-table-column>
         <el-table-column
-          prop="projectEndTime"
-          label="结束时间">
+          prop="joinTime"
+          label="参与时间">
+        </el-table-column>
+        <el-table-column
+          prop="proTime"
+          label="项目期间">
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
           width="100">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="goToProjectJoinPage(scope.row)">立即参与</el-button>
+            <el-button v-if="scope.row.projectState != '已结束' " type="text" size="small" @click="goToProjectJoinPage(scope.row)">立即参与</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -132,6 +140,7 @@
         dialogVisible1:false,
         dialogVisible2:false,
         dialogVisible3:false,
+        proTime:'',
       }
     },
     mounted(){
@@ -156,13 +165,31 @@
           }
         }).then((res) => {
           if(res.data.code == "200"){
+
+            res.data.obj.list.map(e=>{
+              if(e.state == 0){
+                e.state = '中途退出'
+              }else if(e.state == 1){
+                e.state = '不符合条件'
+              }else if(e.state == 2){
+                e.state = '配额满'
+              }else if(e.state == 3){
+                e.state = '已完成'
+              }else if(e.state == 4){
+                e.state = '审核拒绝'
+              }
+
+              e.proTime = e.projectPutTime + '-' +e.projectEndTime
+            })
+
             this.tableData = res.data.obj.list;
+
             this.pageTotal = res.data.obj.pager.total;
             for(var i = 0; i < this.tableData.length; i++){
               if(this.tableData[i].projectState == 0){
                 this.tableData[i].projectState = "正在进行"
               }else if(this.tableData[i].projectState == 1){
-                this.tableData[i].projectState = "已完成"
+                this.tableData[i].projectState = "已结束"
               }else if(this.tableData[i].projectState == 2){
                 this.tableData[i].projectState = "等待积分处理"
               }else if(this.tableData[i].projectState == 3){
@@ -197,7 +224,7 @@
           }
         }).then((res) => {
           if(res.data.success){
-
+            
             this.$router.push({
                       path:'/welcomeAnser',
                       query:{

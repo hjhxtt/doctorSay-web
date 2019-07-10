@@ -2,8 +2,13 @@
   <div class="relatedRecord-wrapper">
     <div class="nav-header">
       <router-link v-for="(item,index) in navlist" :to="item.path" :key="item">
-        <div v-bind:class="{active:path == item.path?true:false}">{{item.name}}</div>
+        <!-- <div v-bind:class="{active:path == item.path?true:false}">{{item.name}}</div> -->
+        <!-- 加active -->
+        <div class="active">{{item.name}}</div>
       </router-link>
+      <span style="font-size:14px;padding-top:9px;margin-left:10px;font-weight:700;">总获得积分：{{total}}</span>
+      <span style="font-size:14px;padding-top:9px;margin-left:10px;font-weight:700;">总兑换积分：{{exchangeTotal}}</span>
+      <span style="font-size:14px;padding-top:9px;margin-left:10px;font-weight:700;">当前积分：{{now}}</span>
     </div>
 
     <div class="table-wrapper">
@@ -16,21 +21,53 @@
   export default {
     data() {
       return {
+        now:'',
+        total:'',
+        exchangeTotal:'',
+        id:'',
         path:'',
         text:'',
         navlist:[
-          {name:'参与记录',path:'/joinRecord'},
-          {name:'兑换记录',path:'/dhRecord'},
+          // {name:'获得积分',path:'/joinRecord'},
+          // {name:'兑换积分',path:'/dhRecord'},
           {name:'积分记录',path:'/jfRecord'}
         ]
       };
     },
     methods: {
+      getMemberInfo(){
+        this.axios.get(this.common.getApi() + '/web/api/member/getMemberInfo','',{
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then((res) => {
+          if(res.data.success){
 
+            this.id = res.data.obj.id
+            this.getRecod()
+            
+          }
+        })
+      },
+      getRecod(){
+        this.axios.get(this.common.getApi() + '/web/api/member/getMemberTotal',{
+          params:{
+            id:this.id
+          }
+        }).then((res) => {
+          if(res.data.success){
+            this.total = res.data.obj.total
+            this.exchangeTotal = Math.abs(res.data.obj.exchangeTotal)
+            this.now = this.total - this.exchangeTotal
+          }
+        })
+      }
     },
     mounted(){
       this.path = this.$route.path;
       console.log(this.path);
+      this.getRecod()
+      this.getMemberInfo()
     },
     watch: {
       $route: {

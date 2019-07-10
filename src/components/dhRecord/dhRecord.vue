@@ -7,10 +7,10 @@
         prop="id"
         label="订单编号">
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="memberRealname"
         label="会员姓名">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="deliverstatus"
         label="审核状态">
@@ -21,11 +21,11 @@
       </el-table-column>
       <el-table-column
         prop="giftprize"
-        label="所需积分">
+        label="兑换积分">
       </el-table-column>
       <el-table-column
         prop="converttime"
-        label="兑换时间">
+        label="日期">
       </el-table-column>
     </el-table>   
     <el-pagination

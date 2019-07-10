@@ -37,8 +37,11 @@
                 <el-menu-item index="verifyZyz" v-if="this.verify_type">
                   <span slot="title">资质审核</span>
                 </el-menu-item>
-                <el-menu-item index="relatedRecord">
-                  <span slot="title">相关记录</span>
+                <el-menu-item index="jfRecord">
+                  <span slot="title">积分记录</span>
+                </el-menu-item>
+                <el-menu-item index="exchangeRecord">
+                  <span slot="title">兑换订单记录</span>
                 </el-menu-item>
                 <el-menu-item index="editPass">
                   <span slot="title">修改密码</span>
@@ -87,7 +90,6 @@
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }).then((res) => {
-          debugger;
           if(res.data.code == '200'){
             this.memberIntegral = res.data.obj.memberIntegral;
             this.memberRealname = res.data.obj.memberRealname;
@@ -225,6 +227,9 @@
   }
   
   .personalCenter .personalCenter-wrapper .el-menu li:nth-child(3){
+    border-bottom: 1px solid #E5E5E5;
+  } 
+  .personalCenter .personalCenter-wrapper .el-menu li:nth-child(4){
     border-bottom: 1px solid #E5E5E5;
   }  
 </style>

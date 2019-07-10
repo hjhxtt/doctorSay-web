@@ -170,7 +170,7 @@
   .integrationHistory-wrapper .el-pagination .btn-prev {
     background: center center no-repeat #FFFFFF;
   }
-  .el-table__row{
-    height: 100px;
-  }
+  .el-table__row {
+    height: 70px;
+}
 </style>
