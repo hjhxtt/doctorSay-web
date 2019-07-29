@@ -19,12 +19,12 @@
         </div>
       </div>
       
-      <div class="tips">您通过注册及验证手机号，已经获得20元积分的奖励；完善以下资料，您将额外获得10元积分奖励，并且只有通过医师认证后， 您才能参加医学调查和兑换礼品。</div>     
+      <div class="tips">您通过注册及验证手机号，已经获得20元积分的奖励；完善以下资料，您将额外获得10元积分奖励，并且只有通过医师认证后， 您才能参加医学调查和兑换礼品；医师认证方式可在上传执业证或者填写科室电话中任选其一。我们将在5个工作日内对职业证书进行审核，拨打科室电话认证将在2周内完成。</div>     
 
-      <div class="thanks"><i>//</i>请填写与您工作有关的信息，以获得更加适合您的调查<i>//</i></div>
+      <div class="thanks"><i>//</i>认证方式：上传执业证书和输入科室电话可以任选一个<i>//</i></div>
       
       <el-form ref="form" :model="form" :rules="rules" label-width="150px" :inline-message='true' status-icon> 
-        <el-form-item label="您的性别" required prop="sex">
+        <!-- <el-form-item label="您的性别" required prop="sex">
           <el-radio-group v-model="form.sex">
             <el-radio label="0">男</el-radio>
             <el-radio label="1">女</el-radio>
@@ -53,17 +53,13 @@
           <el-select placeholder="请选择学校" class="schoolSelect" v-model="form.school">
             <el-option v-for="item in school_options" :label="item.graduatename" :key="item.graduateid" :value="item.graduateid"></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item label="证书认证方式" required>
+        </el-form-item> -->
+        <el-form-item class="rzfs" label="认证方式" required>
           <!--<el-radio-group v-model="form.authentication_type">-->
-          <el-checkbox-group v-model="form.authentication_type">
-            <el-checkbox label="1">上传执业证书</el-checkbox>
-            <el-checkbox label="2">科室电话验证</el-checkbox>
-            <!--<el-radio :label="1">上传执业证书</el-radio>-->
-            <!--<el-radio :label="2">科室电话验证</el-radio>-->
-          </el-checkbox-group>          
+          <el-radio v-model="form.authentication_type" label="2">上传执业证书</el-radio>
+          <el-radio v-model="form.authentication_type" label="1">科室电话验证</el-radio>       
         </el-form-item>
-        <div v-if="form.authentication_type.indexOf('1') != -1">
+        <div v-if="form.authentication_type == 2">
           <el-form-item label="执业证类型" prop="membercertificatetype">
             <el-select class="professionalSelect" placeholder="请选择执业证类型" v-model="form.membercertificatetype">
               <el-option label="医师资格证" value="1"></el-option>
@@ -74,13 +70,14 @@
               <el-option label="护士执业证" value="8"></el-option>
             </el-select>
           </el-form-item> 
-          <el-form-item label="执业证书编号" prop="certificate_num">
+          <el-form-item label="执业证书编号">
             <el-input v-model="form.certificate_num" placeholder="请填写执业证书编号" class="certificateInput"></el-input>
           </el-form-item>
           <el-form-item label="执业证书第一页" required>
             <el-col :span="6">
               <el-upload
                 class="upload-demo"
+                list-type="picture"
                 ref="upload1"
                 action="123"
                 :auto-upload=false
@@ -116,6 +113,7 @@
                   :on-success="newhandlesuccess2"
                   :on-exceed="handleExceed2"
                   :limit="1"
+                  list-type="picture"
                   accept="image/jpeg,image/png">
                   
                   <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
@@ -127,8 +125,8 @@
               </el-col>        
           </el-form-item>
         </div>
-        <div v-if="form.authentication_type.indexOf('2') != -1">
-          <el-form-item label="科室电话" required>
+        <div v-else>
+          <el-form-item label="科室电话">
             <el-form-item prop="region_number">
               <el-input placeholder="区号" type="number" v-model="form.region_number" class="regionnumInput"></el-input>              
             </el-form-item>
@@ -196,7 +194,7 @@
           meeting:'',//加入的学会
           level:null,//最高学历
           graduation_time:null,//毕业时间
-          authentication_type:['1','2'],//证书认证方式
+          authentication_type:'2',//证书认证方式
           certificate_num:null,//执业证书编号
           school:null,
           province:null,
@@ -216,24 +214,24 @@
         province_options:[],
         school_options:[],
         rules: {
-          sex: [
-            { required: true, message: '请选择性别', trigger: 'blur' },
-          ],
-          birth_year: [
-            { required: true, message: '请选择出生年份', trigger: 'change' }
-          ],
-          meeting:[
-            { required: true, message: '请选择加入的学会', trigger: 'blur' }
-          ],
-          level:[
-            { required: true, message: '请选择最高学历', trigger: 'change' },
-          ],
-          graduation_time:[
-            { required: true, message: '请选择毕业时间', trigger: 'change' },
-          ],
-          school:[
-            { required: true, message: '请选择毕业院校', trigger: 'change' },
-          ],
+          // sex: [
+          //   { required: true, message: '请选择性别', trigger: 'blur' },
+          // ],
+          // birth_year: [
+          //   { required: true, message: '请选择出生年份', trigger: 'change' }
+          // ],
+          // meeting:[
+          //   { required: true, message: '请选择加入的学会', trigger: 'blur' }
+          // ],
+          // level:[
+          //   { required: true, message: '请选择最高学历', trigger: 'change' },
+          // ],
+          // graduation_time:[
+          //   { required: true, message: '请选择毕业时间', trigger: 'change' },
+          // ],
+          // school:[
+          //   { required: true, message: '请选择毕业院校', trigger: 'change' },
+          // ],
           region_number:[
             { required: true, message: '请输入区号', trigger: 'blur' },
             { min: 3, message: '请输入正确的区号', trigger: 'blur' }
@@ -250,10 +248,10 @@
             { required: true, message: '请选择接听电话时间', trigger: 'change' },
             { validator: checkTime, trigger: 'change' }
           ],
-          certificate_num:[
-            { required: true, message: '请输入执业证书编号', trigger: 'blur'},
-            { min: 12, message: '请输入正确的执业证书编号', trigger: 'blur' }
-          ],
+          // certificate_num:[
+          //   { required: true, message: '请输入执业证书编号', trigger: 'blur'},
+          //   { min: 12, message: '请输入正确的执业证书编号', trigger: 'blur' }
+          // ],
           membercertificatetype:[
             { required: true, message: '请选择执业证类型', trigger: 'change'},
           ]
@@ -270,15 +268,8 @@
         console.log(this.form.authentication_type);
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            var checkmethod = null;
+            var checkmethod = this.form.authentication_type;
             var sex = null;
-            if(this.form.authentication_type.length == 2){
-              checkmethod = 0
-            }else if(this.form.authentication_type.length == 1 && this.form.authentication_type[0] == '1'){
-              checkmethod = 2
-            }else if(this.form.authentication_type.length == 1 && this.form.authentication_type[0] == '2') {
-              checkmethod = 1
-            }
             
 //          if(this.form.authentication_type == '1'){
 //            checkmethod = 2
@@ -291,7 +282,7 @@
             }else{
               sex = '女';
             }
-            
+            debugger
             if(checkmethod == 2){
               this.uploadForm.append('certificateOne', this.form.fileParam_1[0].raw);
               this.uploadForm.append('certificateTwo', this.form.fileParam_2[0].raw);
@@ -301,21 +292,14 @@
               this.uploadForm.append('departmentstle', this.form.region_number+'-'+this.form.phone_number+'-'+this.form.room_number);
               this.uploadForm.append('beginTime', Number(this.form.start_time.slice(0,2)));
               this.uploadForm.append('endTime', Number(this.form.end_time.slice(0,2)));
-            }else if(checkmethod == 0){
-              this.uploadForm.append('certificateOne', this.form.fileParam_1[0].raw);
-              this.uploadForm.append('certificateTwo', this.form.fileParam_2[0].raw);
-              this.uploadForm.append('memberidcard', this.form.certificate_num);                
-              this.uploadForm.append('membercertificatetype',Number(this.form.membercertificatetype));              
-              this.uploadForm.append('departmentstle', this.form.region_number+'-'+this.form.phone_number+'-'+this.form.room_number);
-              this.uploadForm.append('beginTime', Number(this.form.start_time.slice(0,2)));
-              this.uploadForm.append('endTime', Number(this.form.end_time.slice(0,2)));              
             }
-            this.uploadForm.append('memberSex', sex);
-            this.uploadForm.append('memberBirYear', this.form.birth_year);
-            this.uploadForm.append('societyid', this.form.meeting.join(','));
-            this.uploadForm.append('memberEducation', Number(this.form.level));
-            this.uploadForm.append('graduationTime', this.form.graduation_time);
-            this.uploadForm.append('graduationInstitutions', this.form.school);
+
+            // this.uploadForm.append('memberSex', sex);
+            // this.uploadForm.append('memberBirYear', this.form.birth_year);
+            // this.uploadForm.append('societyid', this.form.meeting.join(','));
+            // this.uploadForm.append('memberEducation', Number(this.form.level));
+            // this.uploadForm.append('graduationTime', this.form.graduation_time);
+            // this.uploadForm.append('graduationInstitutions', this.form.school);
             this.uploadForm.append('checkmethod', Number(checkmethod));
 
             
@@ -334,7 +318,6 @@
 
                 this.$alert('您已经成功完成医生说注册，并获得30元积分奖励，通过医师认证后您将可以使用这些积分，如果你上传了执业证，工作人员将在3-4天完成审核认证。如果你只填写了科室电话，工作人员将在7-10内拨打您科室电话进行医师认证审核，请您耐心等待。接下来页面将跳转至医生说会员中心。', '提示', {
                   confirmButtonText: '确定',
-                  type: 'success'
                 }).then(() => {
                   this.$router.push('/index');
                 })
@@ -438,6 +421,12 @@
 </script>
 
 <style>
+  .rzfs .el-form-item__label{
+    font-size:18px;
+  }
+  .rzfs .el-radio__label{
+    font-size:18px;
+  }
   .perfectInformation-wrapper{
     width: 100%;
     background: #F6F6F6;
@@ -666,9 +655,7 @@
     color: #13B5BB;
   } 
   
-  .perfectInformation-wrapper .el-input input{
-    background: #F9F9F9;
-  } 
+
   
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {

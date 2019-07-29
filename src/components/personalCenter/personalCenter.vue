@@ -32,7 +32,7 @@
                 active-text-color="#13B5BB"
                 :router="true">
                 <el-menu-item index="basicData">
-                  <span slot="title">基本资料</span>
+                  <span slot="title">我的资料</span>
                 </el-menu-item>
                 <el-menu-item index="verifyZyz" v-if="this.verify_type">
                   <span slot="title">资质审核</span>
@@ -43,8 +43,14 @@
                 <el-menu-item index="exchangeRecord">
                   <span slot="title">兑换订单记录</span>
                 </el-menu-item>
+                <el-menu-item index="recommendRecord">
+                  <span slot="title">我的推荐记录</span>
+                </el-menu-item>
                 <el-menu-item index="editPass">
                   <span slot="title">修改密码</span>
+                </el-menu-item>
+                <el-menu-item index="editPhone">
+                  <span slot="title">修改手机号</span>
                 </el-menu-item>
               </el-menu>
             </el-col>
@@ -203,8 +209,8 @@
   }
   
   .personalCenter .personalCenter-wrapper .el-menu-item{
-    height: 80px;
-    line-height: 80px;
+    height: 60px;
+    line-height: 60px;
     font-size: 16px;
     color:#0C0C0C;
   }
@@ -217,19 +223,8 @@
     margin-bottom: 80px;
     padding-top: 0px;
   }  
-  .personalCenter .personalCenter-wrapper .el-menu li:nth-child(1){
+  .personalCenter .personalCenter-wrapper .el-menu li{
     border-top: 1px solid #E5E5E5;
   }
-  
-  .personalCenter .personalCenter-wrapper .el-menu li:nth-child(2){
-    border-top: 1px solid #E5E5E5;
-    border-bottom: 1px solid #E5E5E5;
-  }
-  
-  .personalCenter .personalCenter-wrapper .el-menu li:nth-child(3){
-    border-bottom: 1px solid #E5E5E5;
-  } 
-  .personalCenter .personalCenter-wrapper .el-menu li:nth-child(4){
-    border-bottom: 1px solid #E5E5E5;
-  }  
+   
 </style>

@@ -2,16 +2,18 @@
   <div class="feedback-wrapper">
     <div class="title">业务联系</div>
     <div class="feed-txt">
-      医生说，是中国第一个专业的医生在线调查网站，现有医生会员超过 25000名。从 200 了年成立至今，医生说已执行医药研究项目超过5000人次。研究内容涉及药物、器械、治疗、政策、厂商等主题。我们用临床一线医生的专业经验，为大量医药企业改善产品及服务提供了数据支持。如您有医药研究需求，可留下您的联系方式，我们的客户服务人员会迅速与您取得联系。
+      <!-- 医生说，是中国第一个专业的医生在线调查网站，现有医生会员超过 25000名。从 200 了年成立至今，医生说已执行医药研究项目超过5000人次。研究内容涉及药物、器械、治疗、政策、厂商等主题。我们用临床一线医生的专业经验，为大量医药企业改善产品及服务提供了数据支持。如您有医药研究需求，可留下您的联系方式，我们的客户服务人员会迅速与您取得联系。 -->
+      电子邮箱：mana.li@cn.intage.com，或填写下面的信息以便联系
     </div>
 
       <div class="form-wrapper">
         <el-form :model="form" :rules="rules" ref="form" label-width="100px" style="margin-top: 20px">
-          <el-form-item label="真实姓名" prop="customName">
-            <el-input v-model="form.customName"></el-input>
-          </el-form-item>
+          
           <el-form-item label="公司名称" prop="companyName">
             <el-input v-model="form.companyName"></el-input>
+          </el-form-item>
+          <el-form-item label="真实姓名" prop="customName">
+            <el-input v-model="form.customName"></el-input>
           </el-form-item>
           <el-form-item label="联系电话" prop="linkMobile">
             <el-input v-model="form.linkMobile"></el-input>
@@ -19,18 +21,18 @@
           <el-form-item label="公司职位" prop="position">
             <el-input v-model="form.position"></el-input>
           </el-form-item>
-          <el-form-item label="电子邮箱" prop="email">
+          <!-- <el-form-item label="电子邮箱" prop="email">
             <el-input v-model="form.email"></el-input>
-          </el-form-item>
-          <el-form-item label="项目名称" prop="projectName">
+          </el-form-item> -->
+          <!-- <el-form-item label="项目名称" prop="projectName">
             <el-input v-model="form.projectName"></el-input>
-          </el-form-item>
-          <el-form-item label="反馈细节" prop="projectDetail">
+          </el-form-item> -->
+          <el-form-item label="需求">
             <el-input v-model="form.projectDetail" type="textarea"></el-input>
           </el-form-item>
           <el-form-item>
+            <el-button @click="resetForm('ruleForm')">重置</el-button>
             <el-button type="primary" @click="submitForm('form')">提交</el-button>
-            <!--<el-button @click="resetForm('ruleForm')">重置</el-button>-->
           </el-form-item>
         </el-form>
       </div>

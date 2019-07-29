@@ -24,7 +24,7 @@
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" :inline-message="true">
         <el-form-item label="推荐码" prop="referral_code" style="margin-bottom: 55px;">
           <el-input v-model="ruleForm.referral_code" placeholder="字符推荐码或者推荐人的手机号码"></el-input>
-          <div class="form-tips">如无人推荐，请点此 <span @click="getcode">获取推荐码</span> <b v-if="isgetcode">TBENQ</b></div>
+          <div class="form-tips">如无人推荐，请点此 <span @click="getcode">获取推荐码</span> <b v-if="isgetcode"></b></div>
         </el-form-item>
         <el-form-item label="手机号码" prop="mobile" style="margin-bottom: 101px;">
           <el-input v-model="ruleForm.mobile" placeholder="请输入手机号码"></el-input>
@@ -43,31 +43,45 @@
           <el-input v-model="ruleForm.Email" placeholder="请输入电子邮箱"></el-input>
           <el-checkbox v-model="checkedEmail" @change="noEmail">不使用邮箱</el-checkbox>
         </el-form-item>
+        <el-form-item label="您的性别" required prop="memberSex">
+          <el-radio-group v-model="ruleForm.memberSex">
+            <el-radio label="0">男</el-radio>
+            <el-radio label="1">女</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="真实姓名" prop="real_name">
           <el-input v-model="ruleForm.real_name" placeholder="请输入您的真实姓名"></el-input>
         </el-form-item>
-        <el-form-item label="所在医院" required prop="hospital">
+        <!-- <el-form-item label="所在医院" required prop="hospital"> -->
+        <el-form-item label="医院地区" required>
           <el-select placeholder="请选择" v-model="ruleForm.province" style="width: 131px;" @change="getCityByProvince(ruleForm.province)">
             <el-option v-for="item in province_options" :label="item.provinceName" :value="item.provinceId" :key="item.provinceId"></el-option>
           </el-select>
+          
+          <el-select placeholder="请选择" :disabled="ruleForm.province === 0" v-model="ruleForm.city" style="width: 131px;" @change="getDistrictByCity(ruleForm.city);getHospital(ruleForm.province,ruleForm.city)">
+            <el-option v-for="item in city_options" :key="item.cityId" :label="item.cityName" :value="item.cityId"></el-option>
+          </el-select>
+          <el-select placeholder="请选择" :disabled="ruleForm.province === 0" v-model="ruleForm.region" style="width: 130px;" @change="getHospital(ruleForm.province,ruleForm.city)">
+            <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="医院级别">
+          <el-col style="width: 400px;">
+            <el-select placeholder="请选择" v-model="ruleForm.memberhospitallevel">
+                <el-option v-for="item in hospitalLev_options" :key="item.id" :label="item.sysname" :value="item.id"></el-option>
+              </el-select>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="医院名" required>
           <span v-if="ruleForm.province !== 0">
-            <el-select placeholder="请选择" v-model="ruleForm.city" style="width: 131px;" @change="getDistrictByCity(ruleForm.city)">
-              <el-option v-for="item in city_options" :key="item.cityId" :label="item.cityName" :value="item.cityId"></el-option>
-            </el-select>
-            <el-select placeholder="请选择" v-model="ruleForm.region" style="width: 130px;" @change="getHospital(ruleForm.province,ruleForm.city)">
-              <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
-            <el-col style="width: 400px;margin-top: 20px;">
-              <el-select placeholder="请选择" v-model="ruleForm.hospital">
+            <el-col style="width: 400px;">
+              <el-select placeholder="请选择" v-model="ruleForm.fkHospitalId">
                 <el-option v-for="item in hospital_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-col>
           </span>
           <span v-else>
-            <el-input v-model="ruleForm.city" style="width: 131px;" placeholder="请输入城市"></el-input>
-            <el-input v-model="ruleForm.region" style="width: 130px;" placeholder="请输入地区"></el-input>
-            
-            <el-col style="width: 400px;margin-top: 20px;">
+            <el-col style="width: 400px;">
               <el-input v-model="ruleForm.hospital"  placeholder="请输入医院名"></el-input>
             </el-col>
           </span>
@@ -80,22 +94,22 @@
             <el-option v-for="item in hospital_2_options" :label="item.sectionofficename" :key="item.sectionofficeid" :value="item.sectionofficeid"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="您的职务" prop="duties">
-          <el-select v-model="ruleForm.duties" placeholder="请选择您的职务" style="width: 400px;" @change="getStationTechnicalTitle(ruleForm.duties)">
+        <el-form-item label="职务类型" prop="duties">
+          <el-select v-model="ruleForm.duties" placeholder="请选择职务类型" style="width: 400px;" @change="getStationTechnicalTitle(ruleForm.duties)">
             <el-option v-for="item in duties_options" :label="item.stationName" :value="item.stationId" :key="item.stationId"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="您的职称" prop="equivalent_position">
-          <el-select v-model="ruleForm.equivalent_position" placeholder="请选择您的职称" style="width: 400px;">
+        <el-form-item label="职称" prop="equivalent_position">
+          <el-select v-model="ruleForm.equivalent_position" placeholder="请选择职称" style="width: 400px;">
             <el-option v-for="item in title_options" :label="item.stationName" :value="item.stationId" :key="item.stationId"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="行政职位" prop="executive_position">
-          <el-select v-model="ruleForm.executive_position" placeholder="请选择您的行政职位" style="width: 400px;">
+        <el-form-item label="行政职称" prop="executive_position">
+          <el-select v-model="ruleForm.executive_position" placeholder="请选择您的行政职称" style="width: 400px;">
             <el-option v-for="item in executive_options" :label="item.sysname" :key="item.id" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="从医领域" prop="medical_field_2">
+        <el-form-item label="从医领域">
           <el-select v-model="ruleForm.medical_field_1" placeholder="请选择" multiple style="width:400px;margin-bottom: 10px;" @change="getSonFields(ruleForm.medical_field_1)">
             <el-option v-for="item in field_1_options" :label="item.fieldname" :key="item.id" :value="item.id"></el-option>
           </el-select>
@@ -103,14 +117,7 @@
             <el-option v-for="item in field_2_options" :label="item.fieldname" :key="item.id" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="从医年份" prop="doctor_year">
-          <el-date-picker
-            v-model="ruleForm.doctor_year"
-            type="year"
-            placeholder="选择年"
-            value-format="yyyy">
-          </el-date-picker>
-        </el-form-item>
+        
         <el-form-item  prop="checked">
           <el-checkbox v-model="ruleForm.checked" class="check-txt">我阅读并接受医生说网站的<i>《注册条款》</i>和<i>《隐私保护政策》</i></el-checkbox>
         </el-form-item>
@@ -294,7 +301,7 @@
             if(res.data.code == '200'){
               callback();
             }else{
-              callback(new Error(res.data.msg))
+              callback(new Error('推荐码有误'))
             }
           })
         }
@@ -317,11 +324,14 @@
           hospital_departments_2:'',
           duties:'',//职务
           equivalent_position:'',//职称
-          executive_position:'',//行政职位
+          executive_position:'',//行政职称
           medical_field_1:'',//从医领域
           medical_field_2:'',//从医领域
           doctor_year:'',//从医年份
           checked:false,
+          memberSex:'',
+          memberhospitallevel:'',//医院级别
+          fkHospitalId:''
         },
         isgetcode:false,
         checked:false,
@@ -357,13 +367,13 @@
             { required: true, message: '请选择您的工作科室', trigger: 'change' },
           ],
           duties:[
-            { required: true, message: '请选择您的职务', trigger: 'change' }
+            { required: true, message: '请选择职务类型', trigger: 'change' }
           ],
           // equivalent_position:[
-          //   { required: true, message: '请选择您的职称', trigger: 'change' }
+          //   { required: true, message: '请选择职称', trigger: 'change' }
           // ],
           executive_position:[
-            { required: true, message: '请选择您的行政职位', trigger: 'change' }
+            { required: true, message: '请选择您的行政职称', trigger: 'change' }
           ],
           medical_field_2:[
             { required: true, message: '请选择您的从医领域', trigger: 'blur' }
@@ -387,6 +397,7 @@
         executive_options:[],
         field_1_options:[],
         field_2_options:[],
+        hospitalLev_options:[]
       };
     },
     mounted(){
@@ -395,8 +406,18 @@
       this.getParentOffice();
       this.getAdminiStraion();
       this.getParentFields();
+      this.getHospitalLevel()
     },
     methods: {
+      getHospitalLevel(){
+        this.axios.get(this.common.getApi() + '/web/api/systemmaster/getHospitalLevel').then((res) => {
+          if(res.data.code == '200'){
+            this.hospitalLev_options = res.data.obj;
+          }
+        })
+      },
+      
+      
       noEmail(){
         if(this.checkedEmail){
           this.rules.Email = ''
@@ -409,7 +430,16 @@
         
       },
       getcode(){
+        this.axios.get(this.common.getApi() + '/web/api/register/getSyetemSMSCode','',{
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then((res) => {
+          this.ruleForm.referral_code = res.data.obj
+          
+        })
         this.isgetcode = true;
+        
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -417,37 +447,92 @@
             this.registerBase();
           } else {
             console.log('error submit!!');
-//          console.log(this.ruleForm.medical_field_1);
             return false;
           }
         });
       },
       registerBase(){
         var membertechnical = this.ruleForm.medical_field_2.join(",");
+
+        var memberSex = ''
+        if(this.ruleForm.memberSex == 1){
+          memberSex = '女'
+        }else{
+          memberSex = '男'
+        }
+        if (Number(this.ruleForm.province)===0) { //其他
+            var para = {
+              recommendcode:this.ruleForm.referral_code,
+              memberHandphone:this.ruleForm.mobile,
+              checkkey: this.ruleForm.loginPwd,
+              memberMail: this.ruleForm.Email,
+              memberRealname: this.ruleForm.real_name,
+              memberProvince: Number(this.ruleForm.province),
+              memberCity: Number(this.ruleForm.city),
+              fkDistrictId: Number(this.ruleForm.region),
+              memberhospital: this.ruleForm.hospital,
+              membersectionoffice: Number(this.ruleForm.hospital_departments_2),
+              memberstation: Number(this.ruleForm.equivalent_position),
+              administrativeposition: Number(this.ruleForm.executive_position),
+              membertechnical:membertechnical,
+              // workdate: Number(this.ruleForm.doctor_year),
+              memberhospitallevel:Number(this.ruleForm.memberhospitallevel),
+              memberSex:memberSex,
+              //todu
+            }
+        }else{ //非其他
+        
+        var hospitalName = this.hospital_options.find(e=>{
+          return e.id === this.ruleForm.fkHospitalId
+          debugger
+        })
+        this.ruleForm.hospital = hospitalName.name
+        debugger
+            var para = {
+              recommendcode:this.ruleForm.referral_code,
+              memberHandphone:this.ruleForm.mobile,
+              checkkey: this.ruleForm.loginPwd,
+              memberMail: this.ruleForm.Email,
+              memberRealname: this.ruleForm.real_name,
+              memberProvince: Number(this.ruleForm.province),
+              memberCity: Number(this.ruleForm.city),
+              fkDistrictId: Number(this.ruleForm.region),
+              memberhospital: this.ruleForm.hospital,//医院名
+              fkHospitalId:Number(this.ruleForm.fkHospitalId),//医院id
+              membersectionoffice: Number(this.ruleForm.hospital_departments_2),
+              memberstation: Number(this.ruleForm.equivalent_position),
+              administrativeposition: Number(this.ruleForm.executive_position),
+              membertechnical:membertechnical,
+              // workdate: Number(this.ruleForm.doctor_year),
+              memberhospitallevel:Number(this.ruleForm.memberhospitallevel),
+              memberSex:memberSex,
+              //todu
+            }
+        }
+        
         this.axios.post(this.common.getApi() + '/web/api/register/registerBase',{
-          params:{
-            recommendcode:this.ruleForm.referral_code,
-            memberHandphone:this.ruleForm.mobile,
-            checkkey: this.ruleForm.loginPwd,
-            memberMail: this.ruleForm.Email,
-            memberRealname: this.ruleForm.real_name,
-            memberProvince: Number(this.ruleForm.province),
-            memberCity: Number(this.ruleForm.city),
-            fkDistrictId: Number(this.ruleForm.region),
-            memberhospital: Number(this.ruleForm.hospital),
-            membersectionoffice: Number(this.ruleForm.hospital_departments_2),
-            memberstation: Number(this.ruleForm.equivalent_position),
-            administrativeposition: Number(this.ruleForm.executive_position),
-            membertechnical:membertechnical,
-            workdate: Number(this.ruleForm.doctor_year)
-          }
+          params:para
         }).then((res) => {
           if(res.data.success){
             this.$message({
               type:'success',
               message:'提交成功'
             })
-            this.$router.push('/phoneVerification')
+              //完善成功自动登录
+              this.axios.post(this.common.getApi() + '/web/api/auth/doLogin',{
+                  params:{
+                    mobile: this.ruleForm.mobile,
+                    password: this.ruleForm.loginPwd,
+                  }
+                }).then((res) => {
+                  if(res.data.success){
+                    this.$router.push('/phoneVerification')
+                    location.reload();
+                  }else{
+                    this.$message.error(res.data.msg)
+                  }
+                })
+            
           }else{
             this.$message.error(res.data.msg);
           }
@@ -555,19 +640,7 @@
           }
         }).then((res) => {
           if(res.data.code == '200'){
-            // var newObj = res.data.obj.push({fkCityId: 54,
-            //                               fkDistrictId: 644,
-            //                               fkPolyclinicId: 6,
-            //                               fkProvId: 7,
-            //                               fkSpecialtyId: 0,
-            //                               hospitalGrade: 1,
-            //                               hospitalLevel: 1,
-            //                               id: 1562,
-            //                               name: "其他",
-            //                               nature: 1,
-            //                               numberOfBeds: 108})
             this.hospital_options = res.data.obj;
-            //console.log(this.hospital_options);
             this.ruleForm.hospital = ''
           }
         })
@@ -602,7 +675,7 @@
           }
         })
       },
-      //获取行政职位
+      //获取行政职称
       getAdminiStraion(){
         this.axios.get(this.common.getApi() + '/web/api/systemmaster/getAdminiStraion','',{
           headers: {

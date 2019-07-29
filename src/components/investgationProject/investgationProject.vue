@@ -38,10 +38,12 @@
       </el-table-column>
       <el-table-column
         prop="projectIntegral"
+        width="80"
         label="项目礼金">
       </el-table-column>
       <el-table-column
           prop="integral"
+          width="80"
           label="获得积分">
         </el-table-column>
         <el-table-column
@@ -55,7 +57,7 @@
       <el-table-column
         fixed="right"
         label="操作"
-        width="100">
+        width="70">
         <template slot-scope="scope">
           <el-button v-if="projectState != 1 " type="text" size="small"  @click="gotowelcome(scope.row)">立即参与</el-button>
 

@@ -53,6 +53,7 @@
                   }
                 }).then((res) => {
                   if(res.data.success){
+                    debugger
                     location.href=res.data.obj
                   }else{
                     this.$message.error(res.data.msg);
@@ -65,9 +66,11 @@
               
             },
             fetchData(){
-
+              console.log('url改变了');
               function getQueryVariable(variable){
                     var str = window.location.href
+                    console.log(str);
+                    
                     var query = str.slice(str.indexOf('?')+1,str.length);
                     var vars = query.split("&");
                     for (var i=0;i<vars.length;i++) {
@@ -80,9 +83,6 @@
               var s = getQueryVariable('s')
               var hdopid = getQueryVariable('hdopid')
               var url = window.location.href
-              
-              
-
               this.axios.post(this.common.getApi() + '/web/api/receive/receiveInfo',{
                 params:{
                   hdosid:hdosid,
@@ -95,11 +95,15 @@
                   console.log(res.data);
                   this.returnMsg = res.data.obj.message
                   this.rightNow = false
+                  var valiable = 'result'; 
+                  window.history.pushState({},0,valiable);
                 }else{
                   this.$message.error(res.data.msg)
+                  var valiable = 'result'; 
+                  window.history.pushState({},0,valiable);
                 }
               })
-              
+
           }
         },
         watch: {

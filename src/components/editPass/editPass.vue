@@ -79,8 +79,10 @@
                   type: 'success',
                   message: '修改密码成功,请重新登陆'
                 })
-                this.$router.push('/index');
-                location.reload();
+                setTimeout(() => {
+                  this.$router.push('/index')
+                  location.reload();
+                }, 1000);
 //              this.loginOut();
               }else{
                 this.$message.error(res.data.msg);

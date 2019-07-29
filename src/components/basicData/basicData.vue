@@ -14,237 +14,83 @@
             :on-change="handleChange"
             accept="image/gif, image/jpeg">
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <!-- <i class="avatar-uploader-icon">修改头像</i> -->
           </el-upload>
           <span class="user-id">{{form_1.memberRealname}}</span>
         </div>
-        <div class="change">如需修改资料，请联系后台管理员：QQ-1523732752</div>
-        <el-form :model="form_1" :rules="rules" ref="form_1" label-width="120px" :inline-message='true'>
-          <el-form-item label="个人账号" prop="memberHandphone">
-            <span class="user-account">{{form_1.memberHandphone}}</span>
-            <span class="btn-jh" v-if="$store.state.status=='201'" @click="$router.push('/phoneVerification')">立即激活</span>
-            <span class="btn-jh" v-if="$store.state.status=='202'" @click="$router.push('/perfectInformation')">立即完善资料</span>
-            <span class="btn-jh" v-if="$store.state.status=='203'" @click="$router.push('/verifyZyz')">审核未通过，重新审核</span>
-          </el-form-item>
-          <el-form-item label="真实姓名" prop="memberRealname">
-            <el-input placeholder="请填写您的真实姓名" v-model="form_1.memberRealname" class="unameInput"></el-input>
-          </el-form-item>
-          <el-form-item label="电子邮箱" prop="memberMail">
-            <el-input placeholder="请填写您的电子邮箱" v-model="form_1.memberMail" class="emailInput"></el-input>
-          </el-form-item>
-          <!--------------------------------------------------------->
-          <el-form-item label="所在医院" prop="fkHospitalId" >
-            <el-select placeholder="请选择" v-model="form_1.memberProvince" style="width: 131px;" @change="getCityByProvince(form_1.memberProvince)" disabled>
-              <el-option v-for="item in province_options" :label="item.provinceName" :value="item.provinceId" :key="item.provinceId"></el-option>
-            </el-select>
-            <el-select placeholder="请选择" v-model="form_1.memberCity" style="width: 131px;" @change = "getDistrictByCity(form_1.memberProvince,form_1.memberCity)" disabled>
-              <el-option v-for="item in city_options" :key="item.cityId" :label="item.cityName" :value="item.cityId"></el-option>
-            </el-select>
-            <el-select placeholder="请选择" v-model="form_1.fkDistrictId" style="width: 130px;" disabled>
-              <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
-            <br>
-            <el-select placeholder="请选择" style="width: 400px;margin-top: 10px;" v-model="form_1.fkHospitalId" @change="changeHospital(form_1.fkHospitalId)" disabled>
-              <el-option value="0" label="其他"></el-option>
-              <el-option v-for="item in hospital_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
-            <br />
-            <el-input style="width: 400px;margin-top: 10px;" v-if="form_1.fkHospitalId == 0" v-model="form_1.inputhospital" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="工作科室" prop="membersectionoffice">
-            <el-select v-model="form_1.hospital_departments_1" style="width: 198px;" @change="getSonOffice(form_1.hospital_departments_1)" disabled>
-              <el-option v-for="item in hospital_1_options" :label="item.sectionofficename" :key="item.sectionofficeid" :value="item.sectionofficeid"></el-option>
-            </el-select>
-            <el-select v-model="form_1.membersectionoffice" style="width: 198px;" disabled>
-              <el-option v-for="item in hospital_2_options" :label="item.sectionofficename" :key="item.sectionofficeid" :value="item.sectionofficeid"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="职称" prop="memberstation">
-            <el-select v-model="form_1.zc_1" @change = "getStationTechnicalTitle(form_1.zc_1)" style="width: 198px;" disabled>
-              <el-option v-for="item in zc_1_options" :value="item.stationId" :key="item.stationId" :label="item.stationName"></el-option>
-            </el-select>
-            <el-select v-model="form_1.memberstation" style="width: 198px;" disabled>
-              <el-option v-for="item in zc_2_options" :value="item.stationId" :key="item.stationId" :label="item.stationName"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="行政职位" prop="administrativeposition">
-            <el-select v-model="form_1.administrativeposition" style="width: 200px;" disabled>
-              <el-option v-for="item in xzzw_options" :label="item.sysname" :value="item.id" :key="item.id"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="从医领域" prop="medical_field_2" >
-            <el-select v-model="form_1.medical_field_1" placeholder="请选择" multiple style="width:400px;margin-bottom: 10px;" @change="getSonFields2(form_1.medical_field_1)">
-              <el-option v-for="item in field_1_options" :label="item.fieldname" :key="item.id" :value="item.id"></el-option>
-            </el-select>
-            <br />
-            <el-select v-model="form_1.membertechnical" placeholder="请选择" multiple style="width: 400px;">
-              <el-option v-for="item in field_2_options" :label="item.fieldname" :key="item.id" :value="item.id"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="从医年份" prop="workdate" >
-            <el-date-picker
-              style="width: 200px;"
-              v-model="form_1.workdate"
-              type="year"
-              placeholder="选择年份"
-              value-format="yyyy"
-              disabled
-              >
-            </el-date-picker>
-          </el-form-item>
-        
-          <el-form-item style="border-bottom: 1px solid #E5E5E5;padding-bottom: 40px;">
-            <el-button class="btn-save" @click="submitForm('form_1')" :loading="isload1">保存</el-button>
-          </el-form-item>
-         
-
-        </el-form>
-          <!--------------------------------------------------------->
-        <el-form :model="form_2" :rules="rules" ref="form_2" label-width="120px" :inline-message='true'>
-          <el-form-item label="您的性别" prop="memberSex">
-            <el-radio-group v-model="form_2.memberSex" disabled>
-              <el-radio :label="0">男</el-radio>
-              <el-radio :label="1">女</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="出生年份" prop="memberBirYear">
-            <el-date-picker
-              style="width: 200px;"
-              v-model="form_2.memberBirYear"
-              type="year"
-              placeholder="选择年份"
-              value-format="yyyy" disabled>
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="加入的学会" prop="societyid">
-            <el-select v-model="form_2.societyid" multiple placeholder="请填写您参加过的学会" class="meetingInput" style="width: 400px;">
-              <el-option v-for="item in meeting_options" :label="item.societyname" :key="item.id" :value="item.id"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="最高学历" prop="memberEducation">
-            <el-select v-model="form_2.memberEducation" style="width: 200px;" disabled>
-              <el-option v-for="item in education_options" :label="item.sysname" :value="item.id" :key="item.id"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="毕业时间" required prop="graduationTime">
-            <el-date-picker v-model="form_2.graduationTime" type="year" placeholder="选择日期" value-format="yyyy" style="width: 200px;" disabled></el-date-picker>
-          </el-form-item>
-          <el-form-item label="毕业院校" prop="graduationInstitutions">
-            <el-select placeholder="请选择省份" v-model="form_2.province" @change="getGraduateList(form_2.province)" disabled>
-              <el-option v-for="item in province_options" :label="item.provinceName" :key="item.provinceId" :value="item.provinceId"></el-option>
-            </el-select>
-            <el-select placeholder="请选择学校" v-model="form_2.graduationInstitutions" disabled>
-              <el-option v-for="item in school_options" :label="item.graduatename" :key="item.graduateid" :value="item.graduateid"></el-option>
-            </el-select>
-          </el-form-item>
+        <div class="change">可以修改邮箱和从医领域。其他资料的修改，请联系后台管理员：QQ-1523732752</div>
+          <el-form :model="form_1" :rules="rules" ref="form_1" label-width="120px" :inline-message='true'>
+            <el-form-item label="个人账号" prop="memberHandphone">
+              <span class="user-account">{{form_1.memberHandphone}}</span>
+              <span class="btn-jh" v-if="$store.state.status=='201'" @click="$router.push('/phoneVerification')">立即激活</span>
+              <span class="btn-jh" v-if="$store.state.status=='202'" @click="$router.push('/perfectInformation')">立即完善资料</span>
+              <span class="btn-jh" v-if="$store.state.status=='203'" @click="$router.push('/verifyZyz')">审核未通过，重新审核</span>
+            </el-form-item>
+            <el-form-item label="真实姓名" prop="memberRealname">
+              <el-input placeholder="请填写您的真实姓名" v-model="form_1.memberRealname" class="unameInput" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="您的性别" prop="memberSex">
+              <el-radio-group v-model="form_1.memberSex">
+                <el-radio :label="0">男</el-radio>
+                <el-radio :label="1">女</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="电子邮箱">
+              <el-input placeholder="请填写您的电子邮箱" v-model="form_1.memberMail" class="emailInput"></el-input>
+            </el-form-item>
+            <!--------------------------------------------------------->
+            <el-form-item label="所在医院" prop="fkHospitalId" >
+              <el-select placeholder="请选择" v-model="form_1.memberProvince" style="width: 131px;" @change="getCityByProvince(form_1.memberProvince)" disabled>
+                <el-option v-for="item in province_options" :label="item.provinceName" :value="item.provinceId" :key="item.provinceId"></el-option>
+              </el-select>
+              <el-select placeholder="请选择" v-model="form_1.memberCity" style="width: 131px;" @change = "getDistrictByCity(form_1.memberProvince,form_1.memberCity)" disabled>
+                <el-option v-for="item in city_options" :key="item.cityId" :label="item.cityName" :value="item.cityId"></el-option>
+              </el-select>
+              <el-select placeholder="请选择" v-model="form_1.fkDistrictId" style="width: 130px;" disabled>
+                <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+              <br />
+              <el-input style="width: 400px;margin-top: 10px;" v-if="form_1.memberProvince == 0" v-model="form_1.memberhospital" disabled></el-input>
+              <el-select v-else placeholder="请选择" style="width: 400px;margin-top: 10px;" v-model="form_1.fkHospitalId" disabled>
+                <el-option v-for="item in hospital_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="工作科室" prop="membersectionoffice">
+              <el-select v-model="form_1.hospital_departments_1" style="width: 198px;" @change="getSonOffice(form_1.hospital_departments_1)" disabled>
+                <el-option v-for="item in hospital_1_options" :label="item.sectionofficename" :key="item.sectionofficeid" :value="item.sectionofficeid"></el-option>
+              </el-select>
+              <el-select v-model="form_1.membersectionoffice" style="width: 198px;" disabled>
+                <el-option v-for="item in hospital_2_options" :label="item.sectionofficename" :key="item.sectionofficeid" :value="item.sectionofficeid"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="职称" prop="memberstation">
+              <el-select v-model="form_1.zc_1" @change = "getStationTechnicalTitle(form_1.zc_1)" style="width: 198px;" disabled>
+                <el-option v-for="item in zc_1_options" :value="item.stationId" :key="item.stationId" :label="item.stationName"></el-option>
+              </el-select>
+              <el-select v-model="form_1.memberstation" style="width: 198px;" disabled>
+                <el-option v-for="item in zc_2_options" :value="item.stationId" :key="item.stationId" :label="item.stationName"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="行政职位" prop="administrativeposition">
+              <el-select v-model="form_1.administrativeposition" style="width: 200px;" disabled>
+                <el-option v-for="item in xzzw_options" :label="item.sysname" :value="item.id" :key="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="从医领域" prop="medical_field_2" >
+              <el-select v-model="form_1.medical_field_1" placeholder="请选择" multiple style="width:400px;margin-bottom: 10px;" @change="getSonFields2(form_1.medical_field_1)">
+                <el-option v-for="item in field_1_options" :label="item.fieldname" :key="item.id" :value="item.id"></el-option>
+              </el-select>
+              <br />
+              <el-select v-model="form_1.membertechnical" placeholder="请选择" multiple style="width: 400px;">
+                <el-option v-for="item in field_2_options" :label="item.fieldname" :key="item.id" :value="item.id"></el-option>
+              </el-select>
+            </el-form-item>
           
-          <el-form-item>
-            <el-button class="btn-save" @click="submitForm('form_2')" :loading="isload2">保存</el-button>
-          </el-form-item>
-         
-        </el-form>
-      </div>
+            <el-form-item style="border-bottom: 1px solid #E5E5E5;padding-bottom: 40px;">
+              <el-button class="btn-save" @click="submitForm('form_1')" :loading="isload1">保存</el-button>
+            </el-form-item>
+          
 
-
-      <!--<div class="part-3">
-        <el-form ref="form" label-width="120px" label-position="left">
-          <el-form-item label="您的性别">
-            <el-radio-group v-model="sex">
-              <el-radio label="男"></el-radio>
-              <el-radio label="女"></el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="出生年份">
-            <el-select v-model="birth_year" placeholder="请选择出生年份" class="yearSelect"></el-select>
-          </el-form-item>
-          <el-form-item label="加入的学会">
-            <el-input v-model="meeting" placeholder="请填写您参加过的学会" class="meetingInput"></el-input>
-            <el-button class="btn-addData">+</el-button>
-          </el-form-item>
-          <el-form-item label="最高学历">
-            <el-select v-model="school_level" placeholder="请选择最高学历" class="levelSelect"></el-select>
-          </el-form-item>
-          <el-form-item label="毕业时间">
-            <el-date-picker
-              v-model="graduation_time"
-              type="date"
-              placeholder="选择日期"
-              class="graduationTimeSelect">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="毕业院校" required>
-            <el-select placeholder="请选择省份" class="schProvinceSelect" v-model="school_province"></el-select>
-            <el-select placeholder="请选择城市" class="schCitySelect" v-model="school_city"></el-select>
-            <el-select placeholder="请选择地区" class="schRegionSelect" v-model="school_region"></el-select>
-            <el-select placeholder="请选择学校" class="schoolSelect" v-model="school"></el-select>
-          </el-form-item>
-          <el-form-item label="证书认证方式">
-            <el-checkbox-group v-model="authentication_type">
-              <el-checkbox label="上传执业证书"></el-checkbox>
-              <el-checkbox label="科室电话验证"></el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="医学专业证件">
-            <el-select class="professionalSelect" v-model="professional_certificate" placeholder="请选择医学专业证件"></el-select>
-          </el-form-item>
-          <el-form-item label="执业证书编号">
-            <el-input v-model="certificate_num" placeholder="请填写执业证书编号" class="certificateInput"></el-input>
-          </el-form-item>
-          <el-form-item label="执业证书第一页">
-            <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :file-list="fileList"
-              :limit=1>
-              <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
-              <a href="" class="btn-example" target="_blank">查看示例图</a>
-            </el-upload>
-          </el-form-item>
-          <el-form-item label="执业证书第二页">
-            <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :file-list="fileList"
-              :limit=1>
-              <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
-              <a href="" class="btn-example" target="_blank">查看示例图</a>
-            </el-upload>
-          </el-form-item>
-          <el-form-item label="科室电话" required>
-            <el-input placeholder="区号" v-model="region_number" class="regionnumInput"></el-input>
-            <el-input placeholder="电话号码" v-model="phone_number" class="phonenumInput"></el-input>
-            <el-input placeholder="分机号" v-model="room_number" class="roomnumInput"></el-input>
-            <div class="phone-tips">如：010-55555555转606，请详细填写所在医院的固定电话区号-电话及分机号，请确定能联系到您。我们将拨打此电话，核实是否是本人注册。</div>
-            <div class="phone-warning">注：此电话不会被公开</div>
-          </el-form-item>
-          <el-form-item label="接听电话时间">
-            <el-time-select
-              placeholder="请选择起始时间"
-              class="startTime"
-              v-model="start_time"
-              :picker-options="{
-                start: '08:30',
-                step: '00:30',
-                end: '18:30'
-              }">
-            </el-time-select>
-            <span style="margin: 0 12px;">到</span>
-            <el-time-select
-              placeholder="请选择结束时间"
-              class="endTime"
-              v-model="end_time"
-              :picker-options="{
-                start: '08:30',
-                step: '00:30',
-                end: '18:30',
-                minTime: start_time
-              }">
-            </el-time-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button class="btn-save">保存</el-button>
-          </el-form-item>
-        </el-form>        -->
+          </el-form>
       </div>
     </div>
   </div>
@@ -318,7 +164,6 @@
           beginTime:null,
           registerTime:null,
           memberhospital: null,
-          inputhospital: null,
           province:null,
           graduationInstitutions:null,
         },
@@ -361,9 +206,6 @@
           memberRealname:[
             { required: true, message: '请填写真实姓名', trigger: 'blur' }
           ],
-          memberMail:[
-            { required: true, message: '请填写邮箱', trigger: 'blur' }
-          ],
           memberSex:[
             { required: true, message: '请选择会员性别', trigger: 'change' }
           ],
@@ -394,9 +236,6 @@
           membertechnical:[
             { required: true, message: '请选择从医领域', trigger: 'change' }
           ],
-//        medical_field_2:[
-//          { required: true, message: '请选择从医领域', trigger: 'change' }
-//        ],
         },
         zc_1_options:[],
         zc_2_options:[],
@@ -454,20 +293,16 @@
         })
       },
       submitForm(formName){
+          var memberSex = null
+          if(this.form_1.memberSex == 0){
+                memberSex = "男"
+              }else{
+                memberSex = "女"
+              }
         if(formName == "form_1"){
           this.$refs[formName].validate((valid) => {
             if (valid) {
               this.isload1 = true;
-              console.log(this.form_1.inputhospital);
-              var fkHospitalId = null;
-              if(this.form_1.inputhospital == ""){
-                fkHospitalId = Number(this.form_1.fkHospitalId);
-                this.form_1.memberhospital = "";
-              }else{
-                this.form_1.memberhospital = this.form_1.inputhospital;
-                this.form_1.fkHospitalId = "0";
-                fkHospitalId = null;
-              }
               this.axios.post(this.common.getApi() + '/web/api/member/editMemberInfoOne',{
                 params:{
                   memberRealname: this.form_1.memberRealname,
@@ -475,13 +310,14 @@
                   memberProvince: Number(this.form_1.memberProvince),
                   memberCity: Number(this.form_1.memberCity),
                   fkDistrictId: Number(this.form_1.fkDistrictId),
-                  fkHospitalId: fkHospitalId,
+                  fkHospitalId: Number(this.form_1.fkHospitalId),
                   memberhospital: this.form_1.memberhospital,
                   membersectionoffice: Number(this.form_1.membersectionoffice),
                   memberstation: Number(this.form_1.memberstation),
                   administrativeposition: Number(this.form_1.administrativeposition),
                   membertechnical: this.form_1.membertechnical.join(','),
                   workdate: Number(this.form_1.workdate),
+                  memberSex:memberSex
                 },
               }).then((res) => {
                 this.isload1 = false;
@@ -536,12 +372,6 @@
           });
         }
       },
-      changeHospital(fkHospitalId){
-        if(fkHospitalId != 0){
-          this.form_1.inputhospital = ""
-        }
-        console.log(this.form_1.inputhospital);
-      },
       handleAvatarSuccess(res, file) {
         this.imageUrl = URL.createObjectURL(file.raw);
       },
@@ -554,29 +384,40 @@
 //      return isJPG && isLt2M;
       },
       getMemberInfo(){
+        var that = this
         this.axios.get(this.common.getApi() + '/web/api/member/getMemberInfo','',{
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }).then((res) => {
           if(res.data.success){
+            if(res.data.obj.memberSex == '男'){
+              that.form_1.memberSex = 0
+            }else{
+              that.form_1.memberSex = 1
+            }
+            
             this.imageUrl = this.baseurl+'/'+res.data.obj.memberphoto
             this.form_1.memberRealname = res.data.obj.memberRealname;
             this.form_1.memberMail = res.data.obj.memberMail;
             this.form_1.memberHandphone = res.data.obj.memberHandphone.replace(res.data.obj.memberHandphone.substring(3,7),'****');
             this.form_1.memberProvince = res.data.obj.memberProvince;
             this.getCityByProvince(this.form_1.memberProvince)
-            this.form_1.memberCity = res.data.obj.memberCity;
-            this.getDistrictByCity(this.form_1.memberProvince,this.form_1.memberCity);
-            this.form_1.fkDistrictId = res.data.obj.fkDistrictId;
-//          this.form_1.fkHospitalId = Number(res.data.obj.fkHospitalId);
-            if(res.data.obj.fkHospitalId != 0){
-              this.form_1.fkHospitalId = res.data.obj.fkHospitalId;
-            }else{
-              this.form_1.fkHospitalId = res.data.obj.fkHospitalId.toString();
+            if(Boolean(res.data.obj.memberCity)){
+              this.form_1.memberCity = res.data.obj.memberCity;
             }
+            this.getDistrictByCity(this.form_1.memberProvince,this.form_1.memberCity);
+            
+            if(Boolean(res.data.obj.fkDistrictId)){
+              this.form_1.fkDistrictId = res.data.obj.fkDistrictId;
+            }
+//          this.form_1.fkHospitalId = Number(res.data.obj.fkHospitalId);
+            console.log(this.hospital_options);
+
+            this.form_1.fkHospitalId = res.data.obj.fkHospitalId;
             this.form_1.memberhospital = res.data.obj.memberhospital;
-            this.form_1.inputhospital = res.data.obj.memberhospital;
+            debugger
+            //todo   memberhospital是什么东西
             this.form_1.membersectionoffice = res.data.obj.membersectionoffice;
             this.getSectionOfficeById();
             this.form_1.memberstation = res.data.obj.memberstation;
@@ -593,8 +434,11 @@
               console.log(this.form_1.membertechnical);
               this.getFieldsById();
             }
-            this.form_1.workdate = res.data.obj.workdate.toString();
-            this.form_2.memberSex = res.data.obj.memberSex;
+            debugger
+            if(Boolean(res.data.obj.workdate)){
+              this.form_1.workdate = res.data.obj.workdate.toString();
+            }
+            
             console.log(this.form_2.memberSex)
             if(this.form_2.memberSex == "男"){
               this.form_2.memberSex = 0
@@ -615,7 +459,6 @@
             this.form_2.memberEducation = res.data.obj.memberEducation;
             this.form_2.graduationTime = res.data.obj.graduationTime;
             this.form_2.graduationInstitutions = res.data.obj.graduationInstitutions;
-            this.getGraduateById(Number(this.form_2.graduationInstitutions));
 //          this.form.graduationInstitutions = res.data.obj.graduationInstitutions;
           }
         })
@@ -763,9 +606,14 @@
             }
           }).then((res) => {
             if(res.data.code == '200'){
+              //todo 循环子数据  拿到父级数据
+              console.log('3');
               if(this.form_1.medical_field_1.indexOf(res.data.obj.parentid) == -1){
+                console.log('1');
+                
                 this.form_1.medical_field_1.push(res.data.obj.parentid);
                 this.getSonFields1(res.data.obj.parentid);
+
               }
             }
           })
@@ -926,24 +774,6 @@
           }
         })
       },
-      getGraduateById(id){
-        this.axios.get(this.common.getApi() + '/web/api/graduate/getGraduateById',{
-          params:{
-            params:{
-              id: id
-            }
-          }
-        },{
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        }).then((res) => {
-          if(res.data.code == '200'){
-            this.form_2.province = res.data.obj.provinceid;
-            this.getGraduateList(this.form_2.province);
-          }
-        })
-      },
     }
   }
 </script>
@@ -1053,7 +883,7 @@
   }
 
   .basicData-wrapper .el-input input{
-    background: #F9F9F9;
+    background: #fff;
   }
 
   .basicData-wrapper .provinceSelect,

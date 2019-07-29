@@ -34,13 +34,16 @@ import joinRecord from '@/components/joinRecord/joinRecord'
 import dhRecord from '@/components/dhRecord/dhRecord'
 import jfRecord from '@/components/jfRecord/jfRecord'
 import personalIndex from '@/components/personalIndex/personalIndex'
+import recommendCode from '@/components/recommendCode/recommendCode'
 import verifyPhone from '@/components/verifyPhone/verifyPhone'
 import verifyZyz from '@/components/verifyZyz/verifyZyz'
 import editPass from '@/components/editPass/editPass'
+import editPhone from '@/components/editPhone/editPhone'
 import noticeList from '@/components/noticeList/noticeList'
 import noticeDetail from '@/components/noticeDetail/noticeDetail'
 import welcomeAnser from '@/components/welcomeAnser/welcomeAnser'
 import exchangeRecord from '@/components/exchangeRecord/exchangeRecord'
+import recommendRecord from '@/components/recommendRecord/recommendRecord'
 //import loginDialog from '@/components/loginDialog/loginDialog'
 
 Vue.use(Router)
@@ -144,6 +147,11 @@ export default new Router({
           component: personalIndex
         },
         {
+          path: '/recommendCode',
+          name: 'recommendCode',
+          component: recommendCode
+        },
+        {
           path: '/basicData',
           name: 'basicData',
           component: basicData
@@ -152,6 +160,11 @@ export default new Router({
           path: '/verifyZyz',
           name: 'verifyZyz',
           component: verifyZyz
+        },
+        {
+          path: '/recommendRecord',
+          name: 'recommendRecord',
+          component: recommendRecord
         },
         //添加兑换记录
         {
@@ -168,6 +181,11 @@ export default new Router({
           path: '/editPass',
           name: 'editPass',
           component: editPass
+        },
+        {
+          path: '/editPhone',
+          name: 'editPhone',
+          component: editPhone
         },
         {
           path: '/address',
@@ -192,6 +210,11 @@ export default new Router({
             path: '/jfRecord',
             name: 'jfRecord',
             component: jfRecord
+          },
+          {
+            path: '/recommendRecord',
+            name: 'recommendRecord',
+            component: recommendRecord
           },
           {
           path: '/', redirect: '/joinRecord'

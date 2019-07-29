@@ -63,7 +63,7 @@
         <el-submenu index="1">
           <template slot="title">
 
-            <span>{{memberRealname}}，欢迎您！</span> <img :src="baseurl + $store.state.headurl" alt="" width="50px" height="50px" style="border-radius: 50%;"/>
+            <span style="display:inline-block;padding-top:20px;">&nbsp;{{memberRealname}}，欢迎您！<span style="font-size:12px; color:#ccc;" v-if="Boolean(userStatus)"><br>审核状态：{{userStatus}}</span></span> <img :src="baseurl + $store.state.headurl" alt="" width="50px" height="50px" style="border-radius: 50%;"/>
             
           </template>
           <el-menu-item index="1-1" @click="toCenter">个人中心</el-menu-item>
@@ -78,6 +78,7 @@
   export default {
       data() {
         return {
+          userStatus:'',
           path:"",
           dialogVisible: false,
           islogin:null,
@@ -111,6 +112,36 @@
         console.log(this.path);
       },
       methods: {
+        checkMemberState(){
+        this.axios.get(this.common.getApi() + '/web/api/member/checkMemberState','',{
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then((res) => {
+          if(res.data.code == '200'){//成功
+            this.$store.commit('set_status', res.data.code);
+          }else if(res.data.code == '201'){//用户手机号尚未激活
+            this.$store.commit('set_status', res.data.code);
+          }else if(res.data.code == '202'){//用户尚未完善资料
+            this.$store.commit('set_status', res.data.code);
+          }else if(res.data.code == '203'){//用户审核未通过
+            this.$store.commit('set_status', res.data.code);
+          }else if(res.data.code == '204'){//未登录
+            this.$store.commit('set_status', res.data.code);
+          }else if(res.data.code == '205'){//用户审核中
+            this.$store.commit('set_status', res.data.code);
+          }
+          debugger
+          if(this.$store.state.status == '200'){
+            this.userStatus = '已认证'
+          }else if(this.$store.state.status == '203'){
+            this.userStatus = '认证未通过'
+          }else if(this.$store.state.status == '205'){
+            this.userStatus = '等待审核'
+          }
+
+        })
+      },
         handleSelect(key, keyPath) {
           console.log(key, keyPath);
         },
@@ -135,10 +166,12 @@
               this.islogin = true;
               this.memberRealname = res.data.obj.memberRealname
               this.$store.commit('set_headurl', res.data.obj.memberphoto);
+              this.checkMemberState()
             }else if(res.data.code == '204'){
               this.islogin = false;
             }
             console.log(this.islogin);
+            
           })
         },
         submitForm(formName) {
@@ -177,6 +210,7 @@
             }
           }).then((res) => {
             if(res.data.code == '200'){
+              this.$router.push('/index');
               location.reload();
             }
 
@@ -196,6 +230,12 @@
 </script>
 
 <style>
+  .el-menu--horizontal>.el-submenu .el-submenu__title {
+    height: 60px;
+    line-height: 20px;
+    border-bottom: 2px solid transparent;
+    color: #909399;
+}
   .el-header{
     height: 80px;
     box-shadow:0px 1px 4px 0px rgba(0,0,0,0.08);

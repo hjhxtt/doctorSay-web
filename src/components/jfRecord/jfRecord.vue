@@ -90,6 +90,9 @@
   .joinRecord-wrapper .el-table td, .el-table th.is-leaf {
     text-align: center;
   }   
+  .joinRecord-wrapper .el-table td{
+    padding: 5px 0;
+  }
   
   .joinRecord-wrapper .el-pagination{
     background: #FFF;

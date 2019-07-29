@@ -9,6 +9,10 @@
           :value="item.categoryName">
         </el-option>
       </el-select>
+      <el-select v-model="giftstairkind" placeholder="商品状态" class="typeSelect" @change="getGiftsList(pageIndex,pageSize)">
+        <el-option label="正常商品" value="0"></el-option>
+        <el-option label="热门商品" value="1"></el-option>
+      </el-select>
       <el-select v-model="integralRange" placeholder="积分不限" class="integrationSelect" @change="getGiftsList(pageIndex,pageSize)">
         <el-option label="1-200" value="1"></el-option>
         <el-option label="200-500" value="2"></el-option>
@@ -147,12 +151,12 @@
   
   .integrationUse-wrapper .typeSelect.el-select,
   .integrationUse-wrapper .integrationSelect.el-select{
-    width: 180px;
+    width: 160px;
     margin-right: 15px;
   }
   
   .integrationUse-wrapper .searchInput.el-input{
-    width: 380px;
+    width: 330px;
   }
   
   .el-select .el-input.is-focus .el-input__inner,
@@ -170,6 +174,7 @@
   }
   
   .integrationUse-wrapper .quanyi-list li{
+    width: 280px;
     margin-right: 20px;
     background: #FFF;
     margin-bottom: 20px;

@@ -26,10 +26,20 @@
       title="提示"
       :visible.sync="dialogVisible3"
       width="30%">
-      <span>您的审核未通过，请重新提交</span>
+      <span>你提交的审核未通过。请重新上传职业证书或者填写您所在医院的科室电话。</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible3 = false">取 消</el-button>
         <el-button type="primary" @click="$router.push('/verifyZyz')">重新提交</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible4"
+      width="30%">
+      <span>您提交的资料正在审核中</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible4 = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible4 = false">确定</el-button>
       </span>
     </el-dialog>
 
@@ -47,7 +57,7 @@
     <div class="main">
       <div class="tips">
         <span>你的推荐码：<b style="color: #000;">{{$store.state.recode}}</b> (推荐同事或者真实医生立即获得30元奖励)</span>
-        <!--<span class="detail">查看详细</span>-->
+        <span class="detail" @click="$router.push('/recommendCode')">推荐码说明</span>
       </div>
       <div class="title">调研服务</div>
       <el-table
@@ -71,10 +81,12 @@
         </el-table-column>
         <el-table-column
           prop="projectIntegral"
+          width="80"
           label="项目礼金">
         </el-table-column>
          <el-table-column
           prop="integral"
+          width="80"
           label="获得积分">
         </el-table-column>
         <el-table-column
@@ -88,7 +100,7 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="100">
+          width="70">
           <template slot-scope="scope">
             <el-button v-if="scope.row.projectState != '已结束' " type="text" size="small" @click="goToProjectJoinPage(scope.row)">立即参与</el-button>
           </template>
@@ -140,6 +152,7 @@
         dialogVisible1:false,
         dialogVisible2:false,
         dialogVisible3:false,
+        dialogVisible4:false,
         proTime:'',
       }
     },
@@ -290,6 +303,9 @@
           }else if(this.$store.state.status == '203'){
             console.log(this.$store.state.status);
             this.dialogVisible3 = true;
+          }else if(this.$store.state.status == '205'){
+            console.log(this.$store.state.status);
+            this.dialogVisible4 = true;
           }
 
         })
@@ -344,6 +360,7 @@
     color: #13B5BB;
     text-decoration: underline;
     margin-left: 20px;
+    cursor:pointer;
   }
 
   .personalIndex-wrapper .main .el-table{

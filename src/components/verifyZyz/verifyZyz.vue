@@ -1,18 +1,18 @@
 <template>
   <div class="verifyZyz-wrapper">
     <div class="sure-state">
-      <span class="state-txt">认证状态：你提交的职业证审核{{state_txt}}</span>
+      <span class="state-txt">认证状态：你提交的审核{{state_txt}}</span>
       <!--<span style="color: #ff6600;">上传执业证书，大约3-4天即可通过医师审核认证。</span>-->
     </div>
     <div style="padding: 14px 18px;">
+      <!-- :disabled = "isdisabled" -->
       <el-form ref="form" :model="form" label-width="120px" label-position="left" :disabled = "isdisabled" >
-        <el-form-item label="证书认证方式" required>
-          <el-checkbox-group v-model="form.authentication_type">
-            <el-checkbox label="1">上传执业证书</el-checkbox>
-            <el-checkbox label="2">科室电话验证</el-checkbox>
-          </el-checkbox-group>          
+        <el-form-item label="认证方式" required>
+
+          <el-radio v-model="form.authentication_type" label="2">上传执业证书</el-radio>
+          <el-radio v-model="form.authentication_type" label="1">科室电话验证</el-radio>         
         </el-form-item>
-        <div v-if="form.authentication_type.indexOf('1') != -1">
+        <div v-if="form.authentication_type == 2">
           <el-form-item label="执业证类型" prop="membercertificatetype">
             <el-select class="professionalSelect" placeholder="请选择执业证类型" v-model="form.membercertificatetype">
               <el-option label="医师资格证" value="1"></el-option>
@@ -38,6 +38,7 @@
                 :on-success="newhandlesuccess1"
                 :on-exceed="handleExceed1"
                 :limit="1"
+                list-type="picture"
                 accept="image/jpeg,image/png">
                 <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
@@ -53,6 +54,7 @@
                 <img src="../../assets/p2.png" alt="">
               </div>         
           </el-form-item>
+          <img :src="firstPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
           <el-form-item label="执业证书第二页" required>
             <el-col :span="6">
               <el-upload
@@ -65,6 +67,7 @@
                 :on-success="newhandlesuccess2"
                 :on-exceed="handleExceed2"
                 :limit="1"
+                list-type="picture"
                 accept="image/jpeg,image/png">
                 <el-button size="small" type="primary" class="btn-upload">点击上传</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
@@ -74,11 +77,12 @@
                 <a href="" class="btn-example"  @click.prevent="pic2=true">查看示例图</a>   
               </el-col>            
           </el-form-item>
+          <img :src="secondPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
         </div>
-        <div v-if="form.authentication_type.indexOf('2') != -1">
-          <el-form-item label="科室电话" required>
+        <div v-else>
+          <el-form-item label="科室电话">
             <el-form-item prop="region_number">
-              <el-input placeholder="区号" type="number" v-model="form.region_number" class="regionnumInput"></el-input>              
+              <el-input placeholder="区号"  v-model="form.region_number" class="regionnumInput"></el-input>              
             </el-form-item>
             <el-form-item prop="phone_number">
               <el-input placeholder="电话号码" v-model="form.phone_number" class="phonenumInput"></el-input>
@@ -90,7 +94,7 @@
             <div class="phone-tips">如：010-55555555转606，请详细填写所在医院的固定电话区号-电话及分机号，请确定能联系到您。我们将拨打此电话，核实是否是本人注册。</div>
             <div class="phone-warning">注：此电话不会被公开</div>
           </el-form-item>
-          <el-form-item label="接听电话时间" prop="end_time" required>
+          <el-form-item label="接听电话时间" prop="end_time" >
             <el-time-select
               placeholder="请选择起始时间"
               class="startTime"
@@ -136,6 +140,8 @@
         }
       };      
       return {
+        firstPic:null,
+        secondPic:null,
         pic1:false,
         pic2:false,
         path:"",
@@ -149,13 +155,13 @@
           meeting:'',//加入的学会
           level:null,//最高学历
           graduation_time:null,//毕业时间
-          authentication_type:['1','2'],//证书认证方式
+          authentication_type:'2',//证书认证方式
           certificate_num:null,//执业证书编号
           school:null,
           province:null,
-          region_number:null,
-          phone_number:null,
-          room_number:null,
+          region_number:'',
+          phone_number:'',
+          room_number:'',
           start_time: null,
           end_time: null,
           fileParam_1:null,
@@ -256,32 +262,35 @@
         console.log(this.form.authentication_type);
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            var checkmethod = null;
-            if(this.form.authentication_type.length == 2){
-              checkmethod = 0
-            }else if(this.form.authentication_type.length == 1 && this.form.authentication_type[0] == '1'){
-              checkmethod = 2
-            }else if(this.form.authentication_type.length == 1 && this.form.authentication_type[0] == '2') {
-              checkmethod = 1
-            }
+            var checkmethod = this.form.authentication_type;
             if(checkmethod == 2){
+              if(!Boolean(this.form.fileParam_1)){
+                this.$message.error('请选择第一页图片')
+                return false
+              }
+              if(!Boolean(this.form.fileParam_2)){
+                this.$message.error('请选择第二页图片')
+                return false
+              }
               this.uploadForm.append('certificateOne', this.form.fileParam_1[0].raw);
               this.uploadForm.append('certificateTwo', this.form.fileParam_2[0].raw);
               this.uploadForm.append('memberidcard', this.form.certificate_num);                
               this.uploadForm.append('membercertificatetype',Number(this.form.membercertificatetype));
             }else if(checkmethod == 1){
-              this.uploadForm.append('departmentstle', this.form.region_number+'-'+this.form.phone_number+'-'+this.form.room_number);
-              this.uploadForm.append('beginTime', Number(this.form.start_time.slice(0,2)));
-              this.uploadForm.append('endTime', Number(this.form.end_time.slice(0,2)));
-            }else if(checkmethod == 0){
-              this.uploadForm.append('certificateOne', this.form.fileParam_1[0].raw);
-              this.uploadForm.append('certificateTwo', this.form.fileParam_2[0].raw);
-              this.uploadForm.append('memberidcard', this.form.certificate_num);                
-              this.uploadForm.append('membercertificatetype',Number(this.form.membercertificatetype));              
+              if(!Boolean(this.form.region_number) || !Boolean(this.form.phone_number)){
+                this.$message.error('请完善电话号码')
+                return false
+              }
+              if(!Boolean(this.form.start_time) || !Boolean(this.form.end_time)){
+                this.$message.error('请选择时间')
+                return false
+              }
+
               this.uploadForm.append('departmentstle', this.form.region_number+'-'+this.form.phone_number+'-'+this.form.room_number);
               this.uploadForm.append('beginTime', Number(this.form.start_time.slice(0,2)));
               this.uploadForm.append('endTime', Number(this.form.end_time.slice(0,2)));
             }
+            debugger
             this.uploadForm.append('checkmethod', Number(checkmethod));
             this.axios.post(this.common.getApi() + '/web/api/register/memberAgainAudit',this.uploadForm,{
               headers: {
@@ -295,13 +304,20 @@
                   type: 'success'
                 });
                 this.uploadForm = new FormData()
-//              this.$router.push('/index');
                 this.getMemberInfo();
                 this.checkMemberState();
+                this.form.fileParam_2 = ''
+                this.form.fileParam_1 = ''
+                this.$refs.upload1.clearFiles()
+                this.$refs.upload2.clearFiles()
               }else{
                 this.$message.error(res.data.msg);
                 this.fileList = [];
                 this.uploadForm = new FormData()
+                this.form.fileParam_2 = ''
+                this.form.fileParam_1 = ''
+                this.$refs.upload1.clearFiles()
+                this.$refs.upload2.clearFiles()
               }
             })            
           } else {
@@ -316,7 +332,51 @@
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }).then((res) => {
-          this.form.memberidcard = res.data.obj.memberidcard;
+          
+          //this.form =res.data.obj
+          this.form.membercertificatetype = res.data.obj.membercertificatetype.toString()
+          debugger
+          this.form.certificate_num = res.data.obj.memberidcard;
+          console.log(this.form);
+
+          var phone = res.data.obj.departmentstle.split('-')
+
+          this.form.region_number = phone[0]
+           this.form.phone_number = phone[1]
+            this.form.room_number = phone[2]
+            if(Boolean(res.data.obj.filename)){
+               this.firstPic = this.common.getBaseurl() + res.data.obj.filename
+               console.log(this.firstPic);
+               
+            }
+            if(Boolean(res.data.obj.secondfilename)){
+               this.secondPic = this.common.getBaseurl() + res.data.obj.secondfilename
+               console.log(this.secondPic);
+               
+            }
+           
+
+          
+          // this.form.authentication_type = res.data.obj.checkmethod.toString()
+          this.form.authentication_type = res.data.obj.checkmethod.toString()
+
+
+          var starStr = res.data.obj.beginTime.toString()
+          if(starStr.length == 1){
+            this.form.start_time = '0'+starStr+':00'
+          }else{
+            this.form.start_time = starStr+':00'
+          }
+          var endStr = res.data.obj.endTime.toString()
+          if(endStr.length == 1){
+            this.form.end_time = '0'+endStr+':00'
+          }else{
+            this.form.end_time = endStr+':00'
+          }
+
+
+          //res.data.obj.endTime//电话结束时间
+
         })           
       },
       checkMemberState(){
@@ -326,6 +386,7 @@
           }
         }).then((res) => {
           if(res.data.code == '200'){
+            debugger
             this.state_txt = "已通过";
             this.isdisabled = true;
           }else if(res.data.code == '201'){
@@ -342,7 +403,7 @@
             this.isdisabled = true;
           }else if(res.data.code == '205'){
             this.state_txt = "正在审核中"
-            this.isdisabled = true;
+            this.isdisabled = false;
           }
         })
       },
