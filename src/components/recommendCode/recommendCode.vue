@@ -49,7 +49,7 @@
                       审核时效性：
                     </div>
                     <div class="foot_right">
-                        <span>上传职业证书5个工作日</span>
+                        <span>上传执业证书5个工作日</span>
                         <span>电话审核2周</span>
                       </div>
                     </div>

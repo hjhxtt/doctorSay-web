@@ -9,7 +9,7 @@
           :value="item.categoryName">
         </el-option>
       </el-select>
-      <el-select v-model="giftstairkind" placeholder="商品状态" class="typeSelect" @change="getGiftsList(pageIndex,pageSize)">
+      <el-select v-model="giftstaus" placeholder="商品状态" class="typeSelect" @change="getGiftsList(pageIndex,pageSize)">
         <el-option label="正常商品" value="0"></el-option>
         <el-option label="热门商品" value="1"></el-option>
       </el-select>
@@ -116,6 +116,7 @@
               giftstairkind: this.giftstairkind,
               integralRange: this.integralRange,
               giftsName: this.giftsName,
+              giftstaus:this.giftstaus
             }
           }
         },{

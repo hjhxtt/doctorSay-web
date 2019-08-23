@@ -49,10 +49,13 @@
                 <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
               <br />
-              <el-input style="width: 400px;margin-top: 10px;" v-if="form_1.memberProvince == 0" v-model="form_1.memberhospital" disabled></el-input>
-              <el-select v-else placeholder="请选择" style="width: 400px;margin-top: 10px;" v-model="form_1.fkHospitalId" disabled>
+              <el-select placeholder="请选择" style="width: 400px;margin-top: 10px;" v-model="form_1.fkHospitalId" disabled>
                 <el-option v-for="item in hospital_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                <el-option label="其他" value="-1"></el-option>
               </el-select>
+              <br />
+              <el-input style="width: 400px;margin-top: 10px;" v-if="form_1.fkHospitalId == -1" v-model="form_1.memberhospital" disabled></el-input>
+              
             </el-form-item>
             <el-form-item label="工作科室" prop="membersectionoffice">
               <el-select v-model="form_1.hospital_departments_1" style="width: 198px;" @change="getSonOffice(form_1.hospital_departments_1)" disabled>
@@ -407,28 +410,31 @@
               this.form_1.memberCity = res.data.obj.memberCity;
             }
             this.getDistrictByCity(this.form_1.memberProvince,this.form_1.memberCity);
-            
             if(Boolean(res.data.obj.fkDistrictId)){
-              this.form_1.fkDistrictId = res.data.obj.fkDistrictId;
+              if(res.data.obj.fkDistrictId == -1){
+                this.form_1.fkDistrictId = null
+              }else{
+                this.form_1.fkDistrictId = res.data.obj.fkDistrictId.toString();
+              }
+              
             }
-//          this.form_1.fkHospitalId = Number(res.data.obj.fkHospitalId);
-            console.log(this.hospital_options);
 
-            this.form_1.fkHospitalId = res.data.obj.fkHospitalId;
-            this.form_1.memberhospital = res.data.obj.memberhospital;
+
+            this.form_1.fkHospitalId = res.data.obj.fkHospitalId.toString();
+            this.form_1.memberhospital = res.data.obj.memberhospital.toString();
             debugger
             //todo   memberhospital是什么东西
             this.form_1.membersectionoffice = res.data.obj.membersectionoffice;
             this.getSectionOfficeById();
-            this.form_1.memberstation = res.data.obj.memberstation;
+            this.form_1.memberstation = res.data.obj.memberstation.toString();
             this.getStationById();
-            this.form_1.administrativeposition = res.data.obj.administrativeposition;
+            this.form_1.administrativeposition = res.data.obj.administrativeposition.toString();
             this.form_1.membertechnical = res.data.obj.membertechnical;
             if(this.form_1.membertechnical.length != 0){
               this.form_1.membertechnical = this.form_1.membertechnical.split(',');
               var a = [];
               for(var i = 0; i < this.form_1.membertechnical.length; i++){
-                a.push(Number(this.form_1.membertechnical[i]));
+                a.push(this.form_1.membertechnical[i]);
               }
               this.form_1.membertechnical = a;
               console.log(this.form_1.membertechnical);
@@ -489,8 +495,8 @@
           }
         }).then((res) => {
           if(res.data.code == '200'){
-            this.form_1.zc_1 = res.data.obj.parentid;
-            this.getStationTechnicalTitle(this.form_1.zc_1)
+            this.form_1.zc_1 = res.data.obj.parentid.toString();
+            this.getStationTechnicalTitle(Number(this.form_1.zc_1))
           }
         })
       },
@@ -511,7 +517,7 @@
         this.axios.get(this.common.getApi() + '/web/api/station/getStationTechnicalTitle',{
           params:{
             params:{
-              parentId: parentId
+              parentId: Number(parentId)
             }
           }
         },{
@@ -553,7 +559,7 @@
           this.axios.get(this.common.getApi() + '/web/api/fields/getSonFields',{
             params:{
               params:{
-                parentId:parentId,
+                parentId:Number(parentId),
               }
             }
           },{
@@ -575,7 +581,7 @@
           this.axios.get(this.common.getApi() + '/web/api/fields/getSonFields',{
             params:{
               params:{
-                parentId:parentId[i],
+                parentId:Number(parentId[i]),
               }
             }
           },{
@@ -593,6 +599,7 @@
       getFieldsById(){
         console.log(this.form_1.membertechnical);
         this.form_1.medical_field_1 = [];
+        var that = this
         for(var i = 0; i < this.form_1.membertechnical.length;i++){
           this.axios.get(this.common.getApi() + '/web/api/fields/getFieldsById',{
             params:{
@@ -608,11 +615,11 @@
             if(res.data.code == '200'){
               //todo 循环子数据  拿到父级数据
               console.log('3');
-              if(this.form_1.medical_field_1.indexOf(res.data.obj.parentid) == -1){
-                console.log('1');
+              debugger
+              if(that.form_1.medical_field_1.indexOf(res.data.obj.parentid.toString()) == -1){
                 
-                this.form_1.medical_field_1.push(res.data.obj.parentid);
-                this.getSonFields1(res.data.obj.parentid);
+                that.form_1.medical_field_1.push(res.data.obj.parentid.toString());
+                that.getSonFields1(res.data.obj.parentid);
 
               }
             }

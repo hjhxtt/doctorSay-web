@@ -66,7 +66,7 @@
             <li v-for="item in tableData" @click="tonoticeDetail(item.id)" :key="item.id">
               <span>{{item.createTime}}</span>
               <h3>{{item.title}}</h3>
-              <p>而作为医药整体产业链开端的药品生产环节，不仅直接决定着药品的质量和疗效，而且事关民生。此次意见围绕新药一定要“新”、仿制药一定要…</p>
+              <p class="main_news" v-html="item.content"></p>
             </li>
           </ul>
         </div>
@@ -89,66 +89,6 @@
         </div>
       </div>
     </div>
-
-    
-
-    <!-- <div class="cooperation-wrapper">
-      <div class="yss-cooperation">
-        <h1>合作伙伴</h1>
-        <div class="cooperation-main">
-          <ul class="cooperation-list">
-            <li>
-              <img src="../../assets/home_partner_logo_1.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_2.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_3.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_4.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_5.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_6.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_7.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_8.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_9.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_10.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_11.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_12.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_13.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_14.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_15.png" alt="" />
-            </li>
-            <li>
-              <img src="../../assets/home_partner_logo_16.png" alt="" />
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>    -->
     <el-dialog
       title="提示"
       :visible.sync="dialogVisible1"
@@ -175,7 +115,7 @@
       title="提示"
       :visible.sync="dialogVisible3"
       width="30%">
-      <span>你提交的审核未通过。请重新上传职业证书或者填写您所在医院的科室电话。</span>
+      <span>你提交的审核未通过。请重新上传执业证书或者填写您所在医院的科室电话。</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible3 = false">取 消</el-button>
         <el-button type="primary" @click="$router.push('/verifyZyz')">重新提交</el-button>
@@ -215,7 +155,6 @@
       }
     },
     mounted(){
-//    this.lbheight =
       this.getHomeMessageList();
       this.getBannerList();
       this.getMemberProjectList(1,100)
@@ -305,6 +244,7 @@
         }).then((res) => {
           if(res.data.success){
             this.tableData = res.data.obj;
+            debugger
           }
         })
       },
@@ -351,9 +291,9 @@
   }
 
   .notice-wrapper{
-    padding-top: 150px;
+    padding-top: 120px;
     width: 100%;
-    height: 700px;
+    height: 500px;
     border-bottom: 1px solid #F5F5F5;
     box-sizing: border-box;
   }
@@ -496,13 +436,13 @@
   }
   .service-investigation{
     position: absolute;
-  bottom: 0;
+  bottom: -90px;
   left: 0;
   z-index: 99;
   }
 .service-integration{
   position: absolute;
-  bottom: 0;
+  bottom: -90px;
   right: 0;
   z-index: 99;
 
@@ -588,6 +528,12 @@
     display: block;
     font-size: 14px;
     color: #999999;
+    display: -webkit-box;
+    /*! autoprefixer: off */
+    -webkit-box-orient: vertical;
+    /* autoprefixer: on */
+    -webkit-line-clamp: 4;
+    overflow: hidden;
 
   }
   .intr_bg{
@@ -630,7 +576,6 @@
   .intr-wrapper .yss-intr{
     padding: 150px 0;
   }
-
 
 
 /* intr-main

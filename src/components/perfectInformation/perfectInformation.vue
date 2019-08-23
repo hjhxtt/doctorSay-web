@@ -19,7 +19,7 @@
         </div>
       </div>
       
-      <div class="tips">您通过注册及验证手机号，已经获得20元积分的奖励；完善以下资料，您将额外获得10元积分奖励，并且只有通过医师认证后， 您才能参加医学调查和兑换礼品；医师认证方式可在上传执业证或者填写科室电话中任选其一。我们将在5个工作日内对职业证书进行审核，拨打科室电话认证将在2周内完成。</div>     
+      <div class="tips">您通过注册及验证手机号，已经获得20元积分的奖励；完善以下资料，您将额外获得10元积分奖励，并且只有通过医师认证后， 您才能参加医学调查和兑换礼品；医师认证方式可在上传执业证或者填写科室电话中任选其一。我们将在5个工作日内对执业证书进行审核，拨打科室电话认证将在2周内完成。</div>     
 
       <div class="thanks"><i>//</i>认证方式：上传执业证书和输入科室电话可以任选一个<i>//</i></div>
       
@@ -73,7 +73,7 @@
           <el-form-item label="执业证书编号">
             <el-input v-model="form.certificate_num" placeholder="请填写执业证书编号" class="certificateInput"></el-input>
           </el-form-item>
-          <el-form-item label="执业证书第一页" required>
+          <el-form-item label="执业证书第一页">
             <el-col :span="6">
               <el-upload
                 class="upload-demo"
@@ -101,7 +101,7 @@
                 <img src="../../assets/p2.png" alt="">
               </div>           
           </el-form-item>
-          <el-form-item label="执业证书第二页" required>
+          <el-form-item label="执业证书第二页">
               <el-col :span="6">
                 <el-upload
                   class="upload-demo"
@@ -133,7 +133,7 @@
             <el-form-item prop="phone_number">
               <el-input placeholder="电话号码" v-model="form.phone_number" class="phonenumInput"></el-input>
             </el-form-item>
-            <el-form-item prop="room_number">
+            <el-form-item>
               <el-input placeholder="分机号" v-model="form.room_number" class="roomnumInput"></el-input>
             </el-form-item>              
             
@@ -254,6 +254,12 @@
           // ],
           membercertificatetype:[
             { required: true, message: '请选择执业证类型', trigger: 'change'},
+          ],
+          pic1:[
+            { required: true, message: '请上传执业证书第一页', trigger: 'change'},
+          ],
+          pic2:[
+            { required: true, message: '请上传执业证书第二页', trigger: 'change'},
           ]
         }
       }
@@ -265,6 +271,7 @@
     },
     methods: {
       onSubmit(formName) {
+        
         console.log(this.form.authentication_type);
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -284,6 +291,10 @@
             }
             debugger
             if(checkmethod == 2){
+              if(!Boolean(this.form.fileParam_1) || !Boolean(this.form.fileParam_2)){
+                this.$message.error('请上传执业证书第一页和第二页')
+                return false
+              }
               this.uploadForm.append('certificateOne', this.form.fileParam_1[0].raw);
               this.uploadForm.append('certificateTwo', this.form.fileParam_2[0].raw);
               this.uploadForm.append('memberidcard', this.form.certificate_num);                
@@ -319,7 +330,7 @@
                 this.$alert('您已经成功完成医生说注册，并获得30元积分奖励，通过医师认证后您将可以使用这些积分，如果你上传了执业证，工作人员将在3-4天完成审核认证。如果你只填写了科室电话，工作人员将在7-10内拨打您科室电话进行医师认证审核，请您耐心等待。接下来页面将跳转至医生说会员中心。', '提示', {
                   confirmButtonText: '确定',
                 }).then(() => {
-                  this.$router.push('/index');
+                  this.$router.push('/personalIndex');
                 })
               }else{
                 this.$message.error(res.data.msg);

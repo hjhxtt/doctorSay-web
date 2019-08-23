@@ -53,34 +53,35 @@
           <el-input v-model="ruleForm.real_name" placeholder="请输入您的真实姓名"></el-input>
         </el-form-item>
         <!-- <el-form-item label="所在医院" required prop="hospital"> -->
-        <el-form-item label="医院地区" required>
-          <el-select placeholder="请选择" v-model="ruleForm.province" style="width: 131px;" @change="getCityByProvince(ruleForm.province)">
+        <el-form-item label="医院地区" required prop="province">
+          <el-select placeholder="请选择" v-model="ruleForm.province" style="width: 131px;" @change="getCityByProvince(ruleForm.province);getHospital(ruleForm.province,ruleForm.city,ruleForm.region,ruleForm.memberhospitallevel)">
             <el-option v-for="item in province_options" :label="item.provinceName" :value="item.provinceId" :key="item.provinceId"></el-option>
           </el-select>
           
-          <el-select placeholder="请选择" :disabled="ruleForm.province === 0" v-model="ruleForm.city" style="width: 131px;" @change="getDistrictByCity(ruleForm.city);getHospital(ruleForm.province,ruleForm.city)">
+          <el-select placeholder="请选择" :disabled="ruleForm.province === 0" v-model="ruleForm.city" style="width: 131px;" @change="getDistrictByCity(ruleForm.city);getHospital(ruleForm.province,ruleForm.city,ruleForm.region,ruleForm.memberhospitallevel)">
             <el-option v-for="item in city_options" :key="item.cityId" :label="item.cityName" :value="item.cityId"></el-option>
           </el-select>
-          <el-select placeholder="请选择" :disabled="ruleForm.province === 0" v-model="ruleForm.region" style="width: 130px;" @change="getHospital(ruleForm.province,ruleForm.city)">
+          <el-select placeholder="请选择" :disabled="ruleForm.province === 0" v-model="ruleForm.region" style="width: 130px;" @change="getHospital(ruleForm.province,ruleForm.city,ruleForm.region,ruleForm.memberhospitallevel)">
             <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="医院级别">
           <el-col style="width: 400px;">
-            <el-select placeholder="请选择" v-model="ruleForm.memberhospitallevel">
+            <el-select placeholder="请选择" v-model="ruleForm.memberhospitallevel" @change="getHospital(ruleForm.province,ruleForm.city,ruleForm.region,ruleForm.memberhospitallevel)">
                 <el-option v-for="item in hospitalLev_options" :key="item.id" :label="item.sysname" :value="item.id"></el-option>
               </el-select>
           </el-col>
         </el-form-item>
-        <el-form-item label="医院名" required>
-          <span v-if="ruleForm.province !== 0">
+        <el-form-item label="医院名"  prop="fkHospitalId">
             <el-col style="width: 400px;">
               <el-select placeholder="请选择" v-model="ruleForm.fkHospitalId">
                 <el-option v-for="item in hospital_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                <el-option label="其他" :value="-1"></el-option>
               </el-select>
             </el-col>
-          </span>
-          <span v-else>
+        </el-form-item>
+        <el-form-item  v-if="ruleForm.fkHospitalId == -1">
+          <span>
             <el-col style="width: 400px;">
               <el-input v-model="ruleForm.hospital"  placeholder="请输入医院名"></el-input>
             </el-col>
@@ -336,6 +337,7 @@
         isgetcode:false,
         checked:false,
         rules: {
+          
           referral_code: [
             { validator: validateRecommendCode, trigger: 'blur' }
           ],
@@ -360,14 +362,20 @@
             { required: true, message: '请输入您的真实姓名', trigger: 'blur' },
             { pattern:  /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/, message: '请输入您的真实姓名' }
           ],
-          hospital:[
-            { required: true, message: '请选择您的所在医院', trigger: 'change' }
+          province:[
+            { required: true, message: '请选择您的所在地区', trigger: 'change' }
+          ],
+          fkHospitalId:[
+            { required: true, message: '请选择医院,如果医院列表中没有请在医院列表最下行选择其他,然后输入您所在医院名称', trigger: 'change' }
           ],
           hospital_departments_2:[
             { required: true, message: '请选择您的工作科室', trigger: 'change' },
           ],
           duties:[
             { required: true, message: '请选择职务类型', trigger: 'change' }
+          ],
+          memberSex:[
+            { required: true, message: '请选择性别', trigger: 'change' }
           ],
           // equivalent_position:[
           //   { required: true, message: '请选择职称', trigger: 'change' }
@@ -460,7 +468,7 @@
         }else{
           memberSex = '男'
         }
-        if (Number(this.ruleForm.province)===0) { //其他
+        if (Number(this.ruleForm.fkHospitalId) == -1) { //其他
             var para = {
               recommendcode:this.ruleForm.referral_code,
               memberHandphone:this.ruleForm.mobile,
@@ -471,6 +479,7 @@
               memberCity: Number(this.ruleForm.city),
               fkDistrictId: Number(this.ruleForm.region),
               memberhospital: this.ruleForm.hospital,
+              fkHospitalId:Number(this.ruleForm.fkHospitalId),//医院id
               membersectionoffice: Number(this.ruleForm.hospital_departments_2),
               memberstation: Number(this.ruleForm.equivalent_position),
               administrativeposition: Number(this.ruleForm.executive_position),
@@ -484,10 +493,8 @@
         
         var hospitalName = this.hospital_options.find(e=>{
           return e.id === this.ruleForm.fkHospitalId
-          debugger
         })
         this.ruleForm.hospital = hospitalName.name
-        debugger
             var para = {
               recommendcode:this.ruleForm.referral_code,
               memberHandphone:this.ruleForm.mobile,
@@ -556,7 +563,7 @@
         this.axios.get(this.common.getApi() + '/web/api/station/getStationTechnicalTitle',{
           params:{
             params:{
-              parentId: parentId
+              parentId: Number(parentId)
             }
           }
         },{
@@ -626,12 +633,15 @@
         })
       },
       //获取医院
-      getHospital(provinceId,cityId){
+      getHospital(provinceId,cityId,fkDistrictId,hospitalLevel){
+        this.ruleForm.fkHospitalId = ''
         this.axios.get(this.common.getApi() + '/web/api/hospital/getHospital',{
           params:{
             params:{
               provinceId:provinceId,
-              cityId: cityId
+              cityId: cityId,
+              fkDistrictId:fkDistrictId,
+              hospitalLevel:hospitalLevel
             }
           }
         },{
@@ -706,7 +716,7 @@
           this.axios.get(this.common.getApi() + '/web/api/fields/getSonFields',{
             params:{
               params:{
-                parentId:parentId[i],
+                parentId:Number(parentId[i]),
               }
             }
           },{

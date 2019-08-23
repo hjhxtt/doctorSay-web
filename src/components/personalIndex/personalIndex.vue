@@ -26,7 +26,7 @@
       title="提示"
       :visible.sync="dialogVisible3"
       width="30%">
-      <span>你提交的审核未通过。请重新上传职业证书或者填写您所在医院的科室电话。</span>
+      <span>你提交的审核未通过。请重新上传执业证书或者填写您所在医院的科室电话。</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible3 = false">取 消</el-button>
         <el-button type="primary" @click="$router.push('/verifyZyz')">重新提交</el-button>
@@ -44,7 +44,7 @@
     </el-dialog>
 
     <div class="sure-state">
-      <span class="state-txt"  v-if="$store.state.status=='200'">认证状态：您提交的职业证审核已通过</span>
+      <span class="state-txt"  v-if="$store.state.status=='200'">认证状态：您提交的执业证审核已通过</span>
       <span class="state-txt"  v-if="$store.state.status=='201'">认证状态：您还未激活</span>
       <span class="state-txt"  v-if="$store.state.status=='202'">认证状态：您还未完善资料</span>
       <span class="state-txt"  v-if="$store.state.status=='203'">认证状态：您提交的执业证审核未通过</span>

@@ -54,7 +54,7 @@
                 <img src="../../assets/p2.png" alt="">
               </div>         
           </el-form-item>
-          <img :src="firstPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
+          <img v-show="showPic1" :src="firstPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
           <el-form-item label="执业证书第二页" required>
             <el-col :span="6">
               <el-upload
@@ -77,7 +77,7 @@
                 <a href="" class="btn-example"  @click.prevent="pic2=true">查看示例图</a>   
               </el-col>            
           </el-form-item>
-          <img :src="secondPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
+          <img v-show="showPic2" :src="secondPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
         </div>
         <div v-else>
           <el-form-item label="科室电话">
@@ -140,6 +140,8 @@
         }
       };      
       return {
+        showPic1:true,
+         showPic2:true,
         firstPic:null,
         secondPic:null,
         pic1:false,
@@ -310,6 +312,7 @@
                 this.form.fileParam_1 = ''
                 this.$refs.upload1.clearFiles()
                 this.$refs.upload2.clearFiles()
+                location.reload()
               }else{
                 this.$message.error(res.data.msg);
                 this.fileList = [];
@@ -335,6 +338,9 @@
           
           //this.form =res.data.obj
           this.form.membercertificatetype = res.data.obj.membercertificatetype.toString()
+          if(this.form.membercertificatetype == 0){
+            this.form.membercertificatetype = null
+          }
           debugger
           this.form.certificate_num = res.data.obj.memberidcard;
           console.log(this.form);
@@ -396,7 +402,7 @@
             this.state_txt = "未通过，用户尚未完善资料"
             this.isdisabled = false;
           }else if(res.data.code == '203'){
-            this.state_txt = "未通过"
+            this.state_txt = "未通过，请重新执业证书或者重新填写您所在医院的科室电话"
             this.isdisabled = false;
           }else if(res.data.code == '204'){
             this.state_txt = "未通过，用户未登录"
@@ -419,6 +425,7 @@
       newhandleChange1(response,file,filelist){
         this.form.fileParam_1 = file;
         console.log(this.form.fileParam_1);
+        this.showPic1 = false
       },
       handleExceed2(files, fileList) {
         this.$message.warning(`最多只能选择1个文件`);
@@ -432,6 +439,7 @@
       newhandleChange2(response,file,filelist){
         this.form.fileParam_2 = file;
         console.log(this.form.fileParam);
+        this.showPic2 = false
       },            
     },
   }      

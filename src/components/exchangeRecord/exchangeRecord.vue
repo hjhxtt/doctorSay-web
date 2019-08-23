@@ -76,6 +76,8 @@
                 this.tableData[i].deliverstatus = '已支付'
               }else if(this.tableData[i].deliverstatus == 3){
                 this.tableData[i].deliverstatus = '无效订单'
+              }else if(this.tableData[i].deliverstatus == 5){
+                this.tableData[i].deliverstatus = '未发放显示原因'
               }
             }
           }else{

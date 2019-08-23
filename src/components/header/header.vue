@@ -131,7 +131,6 @@
           }else if(res.data.code == '205'){//用户审核中
             this.$store.commit('set_status', res.data.code);
           }
-          debugger
           if(this.$store.state.status == '200'){
             this.userStatus = '已认证'
           }else if(this.$store.state.status == '203'){
