@@ -11,6 +11,7 @@ export default new Vuex.Store({
     status: null,
     recode:null,
     headurl: '/index_r40_c29.jpg',
+    phone:null
   },
   mutations: {
     // 添加tabs
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     // 设置当前用户状态
     set_status (state, status) {
       this.state.status = status;
+    },
+    set_phone(state, phone) {
+      this.state.phone = phone;
     },
     set_recode (state, recode) {
       this.state.recode = recode;

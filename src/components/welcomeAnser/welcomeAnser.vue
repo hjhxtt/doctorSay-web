@@ -40,6 +40,13 @@
               this.$router.push('/personalIndex')
             },
             start(){
+
+              const loading = this.$loading({
+                lock: true,
+                text: '正在跳转至调查问卷，请稍候...',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+              });
               this.axios.get(this.common.getApi() + '/web/api/project/startAnswer',{
                   params:{
                     params:{
@@ -53,7 +60,7 @@
                   }
                 }).then((res) => {
                   if(res.data.success){
-                    debugger
+                    loading.close();
                     location.href=res.data.obj
                   }else{
                     this.$message.error(res.data.msg);

@@ -349,7 +349,8 @@
 
           this.form.region_number = phone[0]
            this.form.phone_number = phone[1]
-            this.form.room_number = phone[2]
+           
+            this.form.room_number = (phone[2] == 'null' || phone[2] ==  'undefined')? '' :phone[2]
             if(Boolean(res.data.obj.filename)){
                this.firstPic = this.common.getBaseurl() + res.data.obj.filename
                console.log(this.firstPic);

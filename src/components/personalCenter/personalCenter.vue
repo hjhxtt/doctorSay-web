@@ -99,6 +99,8 @@
           if(res.data.code == '200'){
             this.memberIntegral = res.data.obj.memberIntegral;
             this.memberRealname = res.data.obj.memberRealname;
+            debugger
+            this.$store.commit('set_phone', res.data.obj.memberHandphone);
             this.$store.commit('set_recode', res.data.obj.smscode);
             this.$store.commit('set_headurl', res.data.obj.memberphoto);
             console.log(this.$store.state.headurl);

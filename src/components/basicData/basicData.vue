@@ -49,6 +49,11 @@
                 <el-option v-for="item in region_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
               <br />
+              <el-form-item label="医院级别" style="margin-left:-120px;">
+                <el-select placeholder="请选择" style="width: 400px;margin-top: 10px;" v-model="form_1.memberhospitallevel" disabled>
+                  <el-option v-for="item in hospitalLev_options" :key="item.id" :label="item.sysname" :value="item.id"></el-option>
+                </el-select>
+              </el-form-item>
               <el-select placeholder="请选择" style="width: 400px;margin-top: 10px;" v-model="form_1.fkHospitalId" disabled>
                 <el-option v-for="item in hospital_options" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 <el-option label="其他" value="-1"></el-option>
@@ -57,6 +62,7 @@
               <el-input style="width: 400px;margin-top: 10px;" v-if="form_1.fkHospitalId == -1" v-model="form_1.memberhospital" disabled></el-input>
               
             </el-form-item>
+
             <el-form-item label="工作科室" prop="membersectionoffice">
               <el-select v-model="form_1.hospital_departments_1" style="width: 198px;" @change="getSonOffice(form_1.hospital_departments_1)" disabled>
                 <el-option v-for="item in hospital_1_options" :label="item.sectionofficename" :key="item.sectionofficeid" :value="item.sectionofficeid"></el-option>
@@ -169,6 +175,7 @@
           memberhospital: null,
           province:null,
           graduationInstitutions:null,
+          memberhospitallevel:null
         },
         form_2: {
           memberHandphone: null,
@@ -262,6 +269,7 @@
 
         isload1: false,
         isload2: false,
+        hospitalLev_options:[]
       };
     },
     mounted(){
@@ -274,9 +282,16 @@
       this.getParentFields();
       this.getSociety();
       this.getEducational();
-//    console.log(this.$store.state.)
+      this.getHospitalLevel()
     },
     methods: {
+      getHospitalLevel(){
+        this.axios.get(this.common.getApi() + '/web/api/systemmaster/getHospitalLevel').then((res) => {
+          if(res.data.code == '200'){
+            this.hospitalLev_options = res.data.obj;
+          }
+        })
+      },
       handleChange(file, fileList) {
         var formData = new FormData();
         console.log(file);
@@ -418,12 +433,18 @@
               }
               
             }
-
-
-            this.form_1.fkHospitalId = res.data.obj.fkHospitalId.toString();
+            //todo渲染医院级别 字段对上即可
+            if(Boolean(res.data.obj.memberhospitallevel)){
+              this.form_1.memberhospitallevel = res.data.obj.memberhospitallevel.toString()
+            }
+             
+            if(Boolean(res.data.obj.fkHospitalId)){
+              this.form_1.fkHospitalId = res.data.obj.fkHospitalId.toString();
+            }else{
+              this.form_1.fkHospitalId = null
+            }
+            
             this.form_1.memberhospital = res.data.obj.memberhospital.toString();
-            debugger
-            //todo   memberhospital是什么东西
             this.form_1.membersectionoffice = res.data.obj.membersectionoffice;
             this.getSectionOfficeById();
             this.form_1.memberstation = res.data.obj.memberstation.toString();

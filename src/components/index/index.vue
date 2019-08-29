@@ -43,6 +43,7 @@
                 <div class="invest">
                   当前积分：<span>{{memberIntegral}}</span>
                 </div>
+                <div class="service-detail" v-if="Boolean($store.state.recode)" style="margin-top:6px;cursor:pointer;" @click="$router.push('/recommendCode')">推荐码：<span style="color:#13B5BB">{{$store.state.recode}}</span> 或 <span style="color:#13B5BB">{{$store.state.phone}}</span><br/> <span style="text-decoration: underline;">推荐医生奖励积分</span></div>
               </div>
               <div>
                 <el-button class="btn-look" @click="toJf">立即兑换</el-button>
@@ -206,6 +207,8 @@
         }).then((res) => {
           if(res.data.code == '200'){
             this.memberIntegral = res.data.obj.memberIntegral
+            this.$store.commit('set_phone', res.data.obj.memberHandphone);
+            this.$store.commit('set_recode', res.data.obj.smscode);
         }
         })
       },
@@ -284,6 +287,7 @@
 <style>
   .yss-homebanner{
     width: 100%;
+    
   }
 
   .yss-homebanner img{

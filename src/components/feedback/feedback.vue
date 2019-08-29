@@ -36,7 +36,6 @@
           </el-form-item>
         </el-form>
       </div>
-    </div>
   </div>
 </template>
 

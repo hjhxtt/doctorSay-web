@@ -450,6 +450,14 @@
         
       },
       submitForm(formName) {
+         if(!this.checkedEmail){
+          if(!Boolean(this.ruleForm.Email)){
+            this.$message.error('请输入电子邮箱')
+            return false
+          }
+        }
+
+
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.registerBase();
@@ -460,6 +468,11 @@
         });
       },
       registerBase(){
+
+       
+        
+
+
         var membertechnical = this.ruleForm.medical_field_2.join(",");
 
         var memberSex = ''

@@ -26,7 +26,7 @@
           </template>
           <div class="getRecord" style="margin-bottom: 20px;">
             <div class="reward_box">
-              <p>你的推荐码：<span>LAMZD</span>或<span>15021535960</span></p>
+              <p>你的推荐码：<span>{{$store.state.recode}}</span>或<span>{{$store.state.phone}}</span></p>
               <div class="tow_box">
                 <div class="reward_box_main">
                   <div class="reward_head">
@@ -34,7 +34,7 @@
                   </div>
                   <div class="reward_body">
                     <div class="reward_setp">
-                      每推荐一名医生或同行注册医生说
+                      每推荐一名2级以上医院的医生注册医生说
                     </div>
                     <img src="../../assets/arrow_green.png" alt="">
                     <div class="reward_setp">
@@ -90,7 +90,7 @@
           </template>
           <div style="margin-bottom: 20px;">
             <div class="reward_box">
-              <p>你的推荐码：<span>LAMZD</span>或<span>15021535960</span></p>
+              <p>你的推荐码：<span>{{$store.state.recode}}</span>或<span>{{$store.state.phone}}</span></p>
               <span>将推荐码告诉您的同事，让他在注册的时候输入您给到的推荐码，完善资料，通过手机验证后即可成功注册。</span>
               <span>1-2周后，只有当他通过医师认证审核，您的账户将会立即增加<i>30</i>元积分</span>
             </div>
