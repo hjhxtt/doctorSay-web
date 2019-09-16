@@ -59,7 +59,7 @@
         <span>你的推荐码：<b style="color: #000;">{{$store.state.recode}}</b> (推荐同事或者真实医生立即获得30元奖励)</span>
         <span class="detail" @click="$router.push('/recommendCode')">推荐码说明</span>
       </div>
-      <div class="title">调研服务</div>
+      <!-- <div class="title">调研服务</div>
       <el-table
         :data="tableData"
         style="width: 100%">
@@ -111,13 +111,13 @@
         :total="pageTotal"
         :page-size="pageSize"
         @current-change="go">
-      </el-pagination>
+      </el-pagination> -->
       <div class="title">积分商城</div>
       <ul class="quanyi-list">
         <router-link :to="{path:'/proDetail',query: {id: item.id}}" v-for="item in giftsList">
           <li>
             <div class="quanyi-img" style="width: 260px;">
-              <img :src="baseurl + item.giftpicurl" alt="" width="100%"/>
+              <img :src="'../upload/pic/pic_gift/' + item.giftpicurl" alt="" width="100%"/>
             </div>
             <div class="quanyi-info">
               <p class="quanyi-name">{{item.giftname}}</p>
@@ -145,7 +145,7 @@
         pageSize: 12,
         pageTotal: null,
         pageIndex1: 1,
-        pageSize1: 3,
+        pageSize1: 6,
         pageTotal1: null,
         baseurl: baseurl,
         giftsList:[],

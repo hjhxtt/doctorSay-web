@@ -71,11 +71,11 @@
             this.pageTotal = res.data.obj.pager.total;
             for(var i = 0; i < this.tableData.length; i++){
               if(this.tableData[i].deliverstatus == 0){
-                this.tableData[i].deliverstatus = '待支付'
+                this.tableData[i].deliverstatus = '未审核'
               }else if(this.tableData[i].deliverstatus == 1){
-                this.tableData[i].deliverstatus = '已支付'
+                this.tableData[i].deliverstatus = '审核通过已发放'
               }else if(this.tableData[i].deliverstatus == 3){
-                this.tableData[i].deliverstatus = '无效订单'
+                this.tableData[i].deliverstatus = '订单无效积分已退回'
               }else if(this.tableData[i].deliverstatus == 5){
                 this.tableData[i].deliverstatus = '未发放显示原因'
               }

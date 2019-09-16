@@ -4,8 +4,8 @@
       <el-carousel height="480px" indicator-position="none">
         <el-carousel-item v-for="item in bannerList" :key="item.id">
           <h3 style="height: 100%;">
-            <a v-if="item.skipUrl" :href="item.skipUrl"><img :src="baseurl+item.picUrl" alt="" height="100%"/></a>
-            <img :src="baseurl+item.picUrl" alt="" height="100%"/>
+            <a v-if="item.skipUrl" :href="item.skipUrl"><img :src="'../upload/pic/pic_banner/'+item.picUrl" alt="" height="100%"/></a>
+            <img :src="'../upload/pic/pic_banner/'+item.picUrl" alt="" height="100%"/>
           </h3>
         </el-carousel-item>
       </el-carousel>
@@ -15,7 +15,8 @@
         <div class="service-main">
           <div class="service-investigation">
             <div class="service-pic">
-              <img src="../../assets/home_yd.png" alt="" />
+              <img src="../../assets/home_jf.png" alt="" />
+              
             </div>
             <div class="service-info">
               <div>
@@ -33,7 +34,7 @@
           </div>
           <div class="service-integration">
             <div class="service-pic">
-              <img src="../../assets/home_jf.png" alt="" />
+              <img src="../../assets/home_yd.png" alt="" />
             </div>
             <div class="service-info">
               <div>
@@ -246,8 +247,20 @@
           }
         }).then((res) => {
           if(res.data.success){
+
+            
+            
+	          var pattern = /<[^>]+>/g;
+
+            var arr = []
+            res.data.obj.map(e=>{
+              e.content = e.content.replace(pattern,'')
+              arr.push(e.content)
+            })
+            
+
             this.tableData = res.data.obj;
-            debugger
+
           }
         })
       },

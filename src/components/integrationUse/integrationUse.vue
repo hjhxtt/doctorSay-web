@@ -25,7 +25,7 @@
       <router-link :to="{path:'/proDetail',query: {id: item.id}}" v-for="item in giftsList">
         <li>
           <div class="quanyi-img" style="width: 280px;">
-            <img :src="baseurl + item.giftpicurl" alt="" style="width: 280px;height: 210px"/>
+            <img :src="'../upload/pic/pic_gift/' + item.giftpicurl" alt="" style="width: 280px;height: 210px"/>
           </div>
           <div class="quanyi-info">
             <p class="quanyi-name">{{item.giftname}}</p>

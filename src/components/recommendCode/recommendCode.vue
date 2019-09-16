@@ -2,8 +2,8 @@
   <div class="investgationQA-wrapper">
     <div class="title">推荐码说明</div>
     <div class="question-wrapper">
-      <el-collapse>
-        <el-collapse-item>
+      <el-collapse v-model="activeNames">
+        <el-collapse-item name="1">
           <template slot="title">
             <div class="question-title">诚挚邀请</div>
           </template>
@@ -12,7 +12,7 @@
             在中国，我们收集并分析消费者购物的行为已超过 8年。从 05年成立至今我们已携手全球诸多知名药械公司开展 了大量医学市场调查，调研涉及疾病诊治、医疗器械使用需求及改进、 医药品牌满 意度、 医生职业满意度、 跨国药企学术营销、医学再教育情况等几大方面。 
           </div>
         </el-collapse-item>
-        <el-collapse-item>
+        <el-collapse-item name="2">
           <template slot="title">
             <div class="question-title">招募对象</div>
           </template>
@@ -20,7 +20,7 @@
             二级及以上医院的临床科室，城市职称不限 
           </div>
         </el-collapse-item>
-        <el-collapse-item>
+        <el-collapse-item name="3">
           <template slot="title">
             <div class="question-title">可获得的奖励</div>
           </template>
@@ -84,7 +84,7 @@
             </div> 
           </div>
         </el-collapse-item>
-        <el-collapse-item>
+        <el-collapse-item name="4">
           <template slot="title">
             <div class="question-title">邀请方法</div>
           </template>
@@ -97,7 +97,7 @@
            
           </div>
         </el-collapse-item>
-        <el-collapse-item>
+        <el-collapse-item name="5">
           <template slot="title">
             <div class="question-title">注意事项</div>
           </template>
@@ -127,6 +127,7 @@
         pageTotal:null,
         baseurl:null,
         tableData:[],
+        activeNames: ['1','2','3','4','5']
       }
     },
     mounted(){

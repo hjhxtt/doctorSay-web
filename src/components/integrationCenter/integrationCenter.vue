@@ -6,7 +6,7 @@
         <el-aside width="280px">
           <div class="userInfo-wrapper" v-if="islogin">
             <div class="user-head">
-              <img :src="baseurl + $store.state.headurl" alt="" width="80px" height="80px"/>
+              <img :src="'../upload/pic/pic_head/' + $store.state.headurl" alt="" width="80px" height="80px"/>
             </div>
             <div class="user-name">
               <span>{{memberRealname}}</span>

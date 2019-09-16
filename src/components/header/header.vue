@@ -14,7 +14,7 @@
         <el-form-item prop="mobile">
           <el-input class="phoneInput" v-model="loginForm.mobile" placeholder="请输入您的手机号"></el-input>
         </el-form-item>
-        <el-form-item prop="mobile">
+        <el-form-item prop="pass">
           <el-input class="pwdInput" type="password" v-model="loginForm.pass" placeholder="请输入您的登录密码"></el-input>
         </el-form-item>
       </el-form>
@@ -63,7 +63,7 @@
         <el-submenu index="1">
           <template slot="title">
 
-            <span style="display:inline-block;padding-top:20px;">&nbsp;{{memberRealname}}，欢迎您！<span style="font-size:12px; color:#ccc;" v-if="Boolean(userStatus)"><br>审核状态：{{userStatus}}</span></span> <img :src="baseurl + $store.state.headurl" alt="" width="50px" height="50px" style="border-radius: 50%;"/>
+            <span style="display:inline-block;padding-top:20px;">&nbsp;{{memberRealname}}，欢迎您！<span style="font-size:12px; color:#ccc;" v-if="Boolean(userStatus)"><br>审核状态：{{userStatus}}</span></span> <img :src="'../upload/pic/pic_head/' + $store.state.headurl" alt="" width="50px" height="50px" style="border-radius: 50%;"/>
             
           </template>
           <el-menu-item index="1-1" @click="toCenter">个人中心</el-menu-item>

@@ -59,6 +59,8 @@
                 <el-option label="其他" value="-1"></el-option>
               </el-select>
               <br />
+              <el-input style="width: 400px;margin-top: 10px;"  v-model="memberhospitalShow" disabled></el-input>
+              <br />
               <el-input style="width: 400px;margin-top: 10px;" v-if="form_1.fkHospitalId == -1" v-model="form_1.memberhospital" disabled></el-input>
               
             </el-form-item>
@@ -269,7 +271,8 @@
 
         isload1: false,
         isload2: false,
-        hospitalLev_options:[]
+        hospitalLev_options:[],
+        memberhospitalShow:''
       };
     },
     mounted(){
@@ -285,6 +288,25 @@
       this.getHospitalLevel()
     },
     methods: {
+      getHospitalNameById(id){
+
+          this.axios.get(this.common.getApi() + '/web/api/hospital/getHospitalNameById',{
+            params:{
+              params:{
+                id: id
+              }
+            }
+          },{
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }).then((res) => {
+            if(res.data.code == '200'){
+              this.memberhospitalShow = res.data.obj.name
+            }
+          })
+        
+      },
       getHospitalLevel(){
         this.axios.get(this.common.getApi() + '/web/api/systemmaster/getHospitalLevel').then((res) => {
           if(res.data.code == '200'){
@@ -303,7 +325,7 @@
           }
         }).then((res) => {
           if(res.data.success){
-            this.imageUrl = this.baseurl + res.data.obj;
+            this.imageUrl = '../upload/pic/pic_head/' + res.data.obj;
             this.$store.commit('set_headurl', res.data.obj);
           }else{
             this.$message.error(res.data.msg)
@@ -415,7 +437,7 @@
               that.form_1.memberSex = 1
             }
             
-            this.imageUrl = this.baseurl+'/'+res.data.obj.memberphoto
+            this.imageUrl = '../upload/pic/pic_head/'+res.data.obj.memberphoto
             this.form_1.memberRealname = res.data.obj.memberRealname;
             this.form_1.memberMail = res.data.obj.memberMail;
             this.form_1.memberHandphone = res.data.obj.memberHandphone.replace(res.data.obj.memberHandphone.substring(3,7),'****');
@@ -437,17 +459,26 @@
             if(Boolean(res.data.obj.memberhospitallevel)){
               this.form_1.memberhospitallevel = res.data.obj.memberhospitallevel.toString()
             }
-             
+            
             if(Boolean(res.data.obj.fkHospitalId)){
               this.form_1.fkHospitalId = res.data.obj.fkHospitalId.toString();
+              this.getHospitalNameById(res.data.obj.fkHospitalId)
             }else{
               this.form_1.fkHospitalId = null
             }
+
+            
             
             this.form_1.memberhospital = res.data.obj.memberhospital.toString();
+
+            
+
             this.form_1.membersectionoffice = res.data.obj.membersectionoffice;
             this.getSectionOfficeById();
-            this.form_1.memberstation = res.data.obj.memberstation.toString();
+            if(Boolean(res.data.obj.memberstation)){
+              this.form_1.memberstation = res.data.obj.memberstation.toString();
+            }
+            
             this.getStationById();
             this.form_1.administrativeposition = res.data.obj.administrativeposition.toString();
             this.form_1.membertechnical = res.data.obj.membertechnical;

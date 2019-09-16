@@ -40,7 +40,6 @@
               this.$router.push('/personalIndex')
             },
             start(){
-
               const loading = this.$loading({
                 lock: true,
                 text: '正在跳转至调查问卷，请稍候...',
@@ -64,6 +63,7 @@
                     location.href=res.data.obj
                   }else{
                     this.$message.error(res.data.msg);
+                    loading.close();
                   }
                 })
             },
@@ -124,7 +124,7 @@
         padding:100px 0;
     }
     h3{
-        font-size:35px;
+        font-size:18px;
         margin-bottom: 50px;
     }
     p{

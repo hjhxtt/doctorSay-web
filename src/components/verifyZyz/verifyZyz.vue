@@ -54,7 +54,7 @@
                 <img src="../../assets/p2.png" alt="">
               </div>         
           </el-form-item>
-          <img v-show="showPic1" :src="firstPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
+          <img v-show="showPic1" :src="'../upload/pic/pic_certificate/'+firstPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
           <el-form-item label="执业证书第二页" required>
             <el-col :span="6">
               <el-upload
@@ -77,7 +77,7 @@
                 <a href="" class="btn-example"  @click.prevent="pic2=true">查看示例图</a>   
               </el-col>            
           </el-form-item>
-          <img v-show="showPic2" :src="secondPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
+          <img v-show="showPic2" :src="'../upload/pic/pic_certificate/'+secondPic" style="max-width:200px;max-height:200px;margin-left:120px" alt="">
         </div>
         <div v-else>
           <el-form-item label="科室电话">
@@ -312,7 +312,10 @@
                 this.form.fileParam_1 = ''
                 this.$refs.upload1.clearFiles()
                 this.$refs.upload2.clearFiles()
-                location.reload()
+                setTimeout(() => {
+                  location.reload()
+                }, 1500);
+                
               }else{
                 this.$message.error(res.data.msg);
                 this.fileList = [];
@@ -352,12 +355,12 @@
            
             this.form.room_number = (phone[2] == 'null' || phone[2] ==  'undefined')? '' :phone[2]
             if(Boolean(res.data.obj.filename)){
-               this.firstPic = this.common.getBaseurl() + res.data.obj.filename
+               this.firstPic =  res.data.obj.filename
                console.log(this.firstPic);
                
             }
             if(Boolean(res.data.obj.secondfilename)){
-               this.secondPic = this.common.getBaseurl() + res.data.obj.secondfilename
+               this.secondPic =  res.data.obj.secondfilename
                console.log(this.secondPic);
                
             }

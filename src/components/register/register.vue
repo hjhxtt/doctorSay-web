@@ -23,7 +23,7 @@
 
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" :inline-message="true">
         <el-form-item label="推荐码" prop="referral_code" style="margin-bottom: 55px;">
-          <el-input v-model="ruleForm.referral_code" placeholder="字符推荐码或者推荐人的手机号码"></el-input>
+          <el-input v-model="ruleForm.referral_code" placeholder="字符推荐码或者推荐人的手机号码" :disabled="disableCode"></el-input>
           <div class="form-tips">如无人推荐，请点此 <span @click="getcode">获取推荐码</span> <b v-if="isgetcode"></b></div>
         </el-form-item>
         <el-form-item label="手机号码" prop="mobile" style="margin-bottom: 101px;">
@@ -261,7 +261,7 @@
         }
       };
       var validateMobile = (rule, value, callback) => {
-        var regu = /^1[34578]\d{9}$/;
+        var regu = /^\d{11}$/;
         if(regu.test(value)){
           this.axios.get(this.common.getApi() + '/web/api/register/checkMobile',{
             params:{
@@ -309,6 +309,7 @@
       };
 
       return {
+        disableCode:false,
         checkedEmail:false,
         ruleForm: {
           referral_code:'',//推荐码
@@ -415,8 +416,44 @@
       this.getAdminiStraion();
       this.getParentFields();
       this.getHospitalLevel()
+      this.checkRecom()
     },
     methods: {
+      checkRecom(){
+        debugger
+        var url = window.location.href
+
+        if (url.indexOf('recom') != -1) {
+          debugger
+          var params = url.substring(url.indexOf('?')+1)
+
+          var obj =  params.split('=')
+
+          var value = obj[1]
+
+          this.axios.get(this.common.getApi() + '/web/api/register/checkRecommendcode',{
+              params:{
+                params:{
+                  recommendcode: value
+                }
+              }
+            },{
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            }).then((res) => {
+              if(res.data.code == '200'){
+                this.ruleForm.referral_code = value
+                this.disableCode = true
+              }else{
+                this.$message.error('推荐码不存在')
+              }
+            })
+        }
+
+
+        
+      },
       getHospitalLevel(){
         this.axios.get(this.common.getApi() + '/web/api/systemmaster/getHospitalLevel').then((res) => {
           if(res.data.code == '200'){

@@ -289,7 +289,6 @@
             }else{
               sex = '女';
             }
-            debugger
             if(checkmethod == 2){
               if(!Boolean(this.form.fileParam_1) || !Boolean(this.form.fileParam_2)){
                 this.$message.error('请上传执业证书第一页和第二页')
@@ -300,9 +299,14 @@
               this.uploadForm.append('memberidcard', this.form.certificate_num);                
               this.uploadForm.append('membercertificatetype',Number(this.form.membercertificatetype));
             }else if(checkmethod == 1){
-              this.uploadForm.append('departmentstle', this.form.region_number+'-'+this.form.phone_number+'-'+this.form.room_number);
-              this.uploadForm.append('beginTime', Number(this.form.start_time.slice(0,2)));
-              this.uploadForm.append('endTime', Number(this.form.end_time.slice(0,2)));
+              if(Boolean(this.form.start_time) && Boolean(this.form.end_time)){
+                this.uploadForm.append('departmentstle', this.form.region_number+'-'+this.form.phone_number+'-'+this.form.room_number);
+                this.uploadForm.append('beginTime', Number(this.form.start_time.slice(0,2)));
+                this.uploadForm.append('endTime', Number(this.form.end_time.slice(0,2)));
+              }else{
+                this.$message.error('请选择时间')
+                return false
+              }
             }
 
             // this.uploadForm.append('memberSex', sex);

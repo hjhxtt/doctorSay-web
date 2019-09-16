@@ -26,8 +26,9 @@
           <li><span>医生说腾讯微博</span><el-button class="btn-follow" size="mini">+关注</el-button></li>
         </ul> -->
         <div class="yss-qrcode">
-          <img src="../../assets/pic_qrcode.png" alt="" />
-          <div>医学市场专业调查社区</div>
+          <img src="../../assets/pic_qrcode.jpg" alt="" />
+          <div>关注我们的微信公众号<br>
+          快速查询相关信息，接受调查邀请</div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="proDetail-wrapper">
     <div class="proContent">
-      <div class="proImg" style="width: 280px;"><img :src="baseurl + giftpicurl" alt="" width="280px" height="210px"/></div>
+      <div class="proImg" style="width: 280px;"><img :src="'../upload/pic/pic_gift/' + giftpicurl" alt="" width="280px" height="210px"/></div>
       <div class="proDetail">
         <div style="font-size: 24px;font-weight: bold;font-style: italic;">/</div>
         <div class="proName">{{giftname}}</div>

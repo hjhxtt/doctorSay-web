@@ -30,7 +30,7 @@
           label="">
             <template slot-scope="scope">
               <div style="width: 120px;height: 90px;background: #D3BABD;">
-                <img :src="baseurl+scope.row.pro_img" alt="" width="100%" height="100%"/>
+                <img :src="'../upload/pic/pic_gift/'+scope.row.pro_img" alt="" width="100%" height="100%"/>
               </div>
             </template>
         </el-table-column>
